@@ -64,55 +64,65 @@ Node.js (v18.x or higher)
 
 npm (typically installed with Node.js)
 
-1. Backend Setup
-   Open a terminal and follow these steps:
+Backend Setup
+Navigate to the backend folder
 
 Bash
 
-# 1. Navigate to the backend folder
 cd backend
-
-# 2. Install all dependencies
-npm install
-
-# 3. Create the .env.development file for local development
-# Add the following content to it:
-# PORT=3001
-# API_BASE_URL=http://localhost:3001
-# DATABASE_PATH=./database.sqlite
-
-# 4. Create and seed the development database
-npm run db:init
-2. Frontend Setup
-   Open a second terminal window:
+Install all dependencies
 
 Bash
 
-# 1. Navigate to the frontend folder
-cd frontend
-
-# 2. Install all dependencies
 npm install
+Create the environment file
 
-# 3. Create the .env file for local development
-# Add the following content to it:
-# VITE_API_BASE_URL=http://localhost:3001
+In the backend folder, create a file named .env.development and add the following content:
+
+Code snippet
+
+PORT=3001
+API_BASE_URL=http://localhost:3001
+DATABASE_PATH=./database.sqlite
+Create and seed the development database
+
+This command creates the database.sqlite file and populates it with initial data.
+
+Bash
+
+npm run db:init
+Frontend Setup
+Navigate to the frontend folder (in a separate terminal window)
+
+Bash
+
+cd frontend
+Install all dependencies
+
+Bash
+
+npm install
+Create the environment file
+
+In the frontend folder, create a file named .env and add the following content:
+
+Code snippet
+
+VITE_API_BASE_URL=http://localhost:3001
 🚀 Running the Application
 You need to run two servers simultaneously in two separate terminals.
 
-Running the Backend:
-
+Running the Backend
 Bash
 
-# In the /backend terminal
+# In your /backend terminal
 npm start
 The server will be available at http://localhost:3001.
 
-Running the Frontend:
-
+Running the Frontend
 Bash
 
-# In the /frontend terminal
+# In your /frontend terminal
 npm run dev
 The application will open in your browser at http://localhost:5173.
 
@@ -131,7 +141,7 @@ This command will create and seed the test-database.sqlite file.
 2. Running API Tests (Backend)
    These tests check the API endpoints directly without a UI.
 
-Start the backend in test mode (in the first terminal):
+Start the backend in test mode (in your first terminal):
 
 Bash
 
@@ -146,7 +156,7 @@ npm run test:api
 3. Running End-to-End (E2E) Tests (Frontend)
    These tests simulate real user interactions in a browser.
 
-Start the backend in test mode (in the first terminal):
+Start the backend in test mode (in your first terminal):
 
 Bash
 

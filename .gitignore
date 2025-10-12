@@ -25,3 +25,6 @@
 
 # Databases
 *.sqlite
+
+# User-generated content
+/backend/uploads/
