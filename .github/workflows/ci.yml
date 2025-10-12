@@ -1,6 +1,5 @@
 name: Backend CI Tests
 
-# Triggers: Run this workflow on push to the main branch or on pull requests targeting main.
 on:
   push:
     branches: [ "main" ]
@@ -8,12 +7,9 @@ on:
     branches: [ "main" ]
 
 jobs:
-  # The name of the job
   test-backend:
-    # The type of virtual machine to run the job on
     runs-on: ubuntu-latest
 
-    # Environment variables for DATABASE_PATH, etc.
     env:
       NODE_ENV: test
       DATABASE_PATH: ./test-database.sqlite
@@ -21,41 +17,36 @@ jobs:
       API_BASE_URL: http://localhost:3001
 
     steps:
-      # Step 1: Check out the repository code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step 2: Set up the specified version of Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
 
-      # Step 3: Install backend project dependencies
       - name: Install backend dependencies
         working-directory: ./backend
         run: npm install
 
-      # Step 4: Install Playwright browsers required for testing
+      - name: Create uploads directory
+        run: mkdir -p backend/uploads
+
       - name: Install Playwright browsers
         working-directory: ./backend
         run: npx playwright install --with-deps
-      
-      # Step 5: Initialize the test database using the environment variables set above
+
       - name: Initialize test database
         working-directory: ./backend
         run: npm run test:init-db
 
-      # Step 6: Start the server in the background. The '&' runs it as a background process.
       - name: Start server in test mode
         working-directory: ./backend
         run: npm run start:test &
 
-      # Step 7: Wait for the server to be ready before running tests
       - name: Wait for server to be ready
-        run: sleep 10 # Gives the server 10 seconds to start up
+        run: sleep 10
 
-      # Step 8: Run the Playwright API tests
       - name: Run Playwright API tests
         working-directory: ./backend
         run: npm run test:api
