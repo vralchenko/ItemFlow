@@ -1,0 +1,25 @@
+{
+  "headerTitle": "Item Flow",
+  "manageCategories": "Manage Categories",
+  "addNewItem": "Add New Item",
+  "filterPlaceholder": "Filter by name...",
+  "totalItemsFound": "Total items found: {{count}}",
+  "dialogs": {
+    "addItemTitle": "Add New Item",
+    "editItemTitle": "Edit Item",
+    "manageCategoriesTitle": "Manage Categories",
+    "newCategoryName": "New Category Name",
+    "existingCategories": "Existing Categories:"
+  },
+  "form": {
+    "itemName": "Item Name",
+    "category": "Category",
+    "uploadImage": "Upload Image"
+  },
+  "buttons": {
+    "add": "Add",
+    "save": "Save",
+    "close": "Close",
+    "cancel": "Cancel"
+  }
+}

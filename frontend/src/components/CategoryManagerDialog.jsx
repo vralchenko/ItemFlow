@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, TextField,
     List, ListItem, ListItemText, IconButton, Typography
@@ -9,9 +10,9 @@ import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
 
 const CategoryManagerDialog = ({ open, onClose, categories, onAddCategory, onUpdateCategory, onDeleteCategory }) => {
+    const { t } = useTranslation();
     const [newCategoryName, setNewCategoryName] = useState('');
     const [addError, setAddError] = useState('');
-
     const [editingCategoryId, setEditingCategoryId] = useState(null);
     const [editingCategoryName, setEditingCategoryName] = useState('');
     const [editError, setEditError] = useState('');
@@ -49,11 +50,11 @@ const CategoryManagerDialog = ({ open, onClose, categories, onAddCategory, onUpd
 
     return (
         <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
-            <DialogTitle>Manage Categories</DialogTitle>
+            <DialogTitle>{t('dialogs.manageCategoriesTitle')}</DialogTitle>
             <DialogContent>
                 <Box sx={{ display: 'flex', gap: 1, my: 2, alignItems: 'flex-start' }}>
                     <TextField
-                        label="New Category Name"
+                        label={t('dialogs.newCategoryName')}
                         value={newCategoryName}
                         onChange={(e) => {
                             setNewCategoryName(e.target.value);
@@ -65,9 +66,9 @@ const CategoryManagerDialog = ({ open, onClose, categories, onAddCategory, onUpd
                         error={!!addError}
                         helperText={addError}
                     />
-                    <Button onClick={handleAdd} variant="contained">Add</Button>
+                    <Button onClick={handleAdd} variant="contained">{t('buttons.add')}</Button>
                 </Box>
-                <Typography variant="subtitle1">Existing Categories:</Typography>
+                <Typography variant="subtitle1">{t('dialogs.existingCategories')}</Typography>
                 <List dense>
                     {categories.map(cat => (
                         <ListItem key={cat.id}>
@@ -90,11 +91,9 @@ const CategoryManagerDialog = ({ open, onClose, categories, onAddCategory, onUpd
                             ) : (
                                 <>
                                     <ListItemText primary={cat.name} />
-                                    {/* ✅ ARIA-LABEL ADDED HERE */}
                                     <IconButton aria-label="edit" edge="end" sx={{ mr: 1 }} onClick={() => handleStartEdit(cat)}>
                                         <EditIcon fontSize="small" />
                                     </IconButton>
-                                    {/* ✅ ARIA-LABEL ADDED HERE FOR CONSISTENCY */}
                                     <IconButton aria-label="delete" edge="end" onClick={() => onDeleteCategory(cat.id)}>
                                         <DeleteIcon fontSize="small" />
                                     </IconButton>
@@ -105,7 +104,7 @@ const CategoryManagerDialog = ({ open, onClose, categories, onAddCategory, onUpd
                 </List>
             </DialogContent>
             <DialogActions>
-                <Button onClick={onClose}>Close</Button>
+                <Button onClick={onClose}>{t('buttons.close')}</Button>
             </DialogActions>
         </Dialog>
     );

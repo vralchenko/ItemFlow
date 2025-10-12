@@ -1,0 +1,25 @@
+{
+  "headerTitle": "Потік Елементів",
+  "manageCategories": "Керування категоріями",
+  "addNewItem": "Додати елемент",
+  "filterPlaceholder": "Фільтр за назвою...",
+  "totalItemsFound": "Всього знайдено елементів: {{count}}",
+  "dialogs": {
+    "addItemTitle": "Додати новий елемент",
+    "editItemTitle": "Редагувати елемент",
+    "manageCategoriesTitle": "Керування категоріями",
+    "newCategoryName": "Назва нової категорії",
+    "existingCategories": "Існуючі категорії:"
+  },
+  "form": {
+    "itemName": "Назва елемента",
+    "category": "Категорія",
+    "uploadImage": "Завантажити зображення"
+  },
+  "buttons": {
+    "add": "Додати",
+    "save": "Зберегти",
+    "close": "Закрити",
+    "cancel": "Скасувати"
+  }
+}

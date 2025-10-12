@@ -1,0 +1,25 @@
+{
+  "headerTitle": "Artikel-Fluss",
+  "manageCategories": "Kategorien verwalten",
+  "addNewItem": "Neuen Artikel hinzufügen",
+  "filterPlaceholder": "Nach Namen filtern...",
+  "totalItemsFound": "Gefundene Artikel: {{count}}",
+  "dialogs": {
+    "addItemTitle": "Neuen Artikel hinzufügen",
+    "editItemTitle": "Artikel bearbeiten",
+    "manageCategoriesTitle": "Kategorien verwalten",
+    "newCategoryName": "Neuer Kategoriename",
+    "existingCategories": "Bestehende Kategorien:"
+  },
+  "form": {
+    "itemName": "Artikelname",
+    "category": "Kategorie",
+    "uploadImage": "Bild hochladen"
+  },
+  "buttons": {
+    "add": "Hinzufügen",
+    "save": "Speichern",
+    "close": "Schließen",
+    "cancel": "Abbrechen"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "headerTitle": "Поток Элементов",
+  "manageCategories": "Управление категориями",
+  "addNewItem": "Добавить элемент",
+  "filterPlaceholder": "Фильтр по названию...",
+  "totalItemsFound": "Всего найдено элементов: {{count}}",
+  "dialogs": {
+    "addItemTitle": "Добавить новый элемент",
+    "editItemTitle": "Редактировать элемент",
+    "manageCategoriesTitle": "Управление категориями",
+    "newCategoryName": "Имя новой категории",
+    "existingCategories": "Существующие категории:"
+  },
+  "form": {
+    "itemName": "Название элемента",
+    "category": "Категория",
+    "uploadImage": "Загрузить изображение"
+  },
+  "buttons": {
+    "add": "Добавить",
+    "save": "Сохранить",
+    "close": "Закрыть",
+    "cancel": "Отмена"
+  }
+}

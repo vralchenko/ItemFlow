@@ -1,9 +1,10 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     Button, Dialog, DialogActions, DialogContent, DialogTitle,
-    Box, Stack, TextField, MenuItem // Added MenuItem for category dropdown
+    Box, Stack, TextField, Select, MenuItem, InputLabel, FormControl
 } from '@mui/material';
-import SaveIcon from '@mui/icons-material/Save'; // Changed to SaveIcon for consistency
+import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
 
 const ItemFormDialog = ({
@@ -16,16 +17,18 @@ const ItemFormDialog = ({
                             editingId,
                             errors,
                             preview,
-                            categories // Added categories prop for the dropdown
+                            categories
                         }) => {
+    const { t } = useTranslation();
+
     return (
         <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-            <DialogTitle>{editingId ? 'Edit Item' : 'Add New Item'}</DialogTitle>
+            <DialogTitle>{editingId ? t('dialogs.editItemTitle') : t('dialogs.addItemTitle')}</DialogTitle>
             <Box component="form" onSubmit={onSubmit}>
                 <DialogContent>
                     <Stack spacing={2} sx={{ mt: 1 }}>
                         <TextField
-                            label="Item Name"
+                            label={t('form.itemName')}
                             name="name"
                             value={formData.name}
                             onChange={onInputChange}
@@ -35,34 +38,27 @@ const ItemFormDialog = ({
                             helperText={errors.name}
                             autoFocus
                         />
-                        {/* Changed category to a Select/Dropdown */}
-                        <TextField
-                            select // Make it a select input
-                            label="Category"
-                            name="category_id" // Changed name to category_id
-                            value={formData.category_id || ''} // Handle null/undefined for initial value
-                            onChange={onInputChange}
-                            fullWidth
-                            required
-                            error={!!errors.category_id} // Use category_id for errors
-                            helperText={errors.category_id}
-                        >
-                            {/* Option for no category */}
-                            <MenuItem value="">
-                                <em>No Category</em>
-                            </MenuItem>
-                            {/* Map over categories to create options */}
-                            {categories.map((cat) => (
-                                <MenuItem key={cat.id} value={cat.id}>
-                                    {cat.name}
-                                </MenuItem>
-                            ))}
-                        </TextField>
+                        <FormControl fullWidth required error={!!errors.category_id}>
+                            <InputLabel id="category-select-label">{t('form.category')}</InputLabel>
+                            <Select
+                                labelId="category-select-label"
+                                name="category_id"
+                                value={formData.category_id || ''}
+                                label={t('form.category')}
+                                onChange={onInputChange}
+                            >
+                                {categories.map((cat) => (
+                                    <MenuItem key={cat.id} value={cat.id}>
+                                        {cat.name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
                         <Button
                             variant="outlined"
                             component="label"
                         >
-                            Upload Image
+                            {t('form.uploadImage')}
                             <input
                                 type="file"
                                 hidden
@@ -78,11 +74,10 @@ const ItemFormDialog = ({
                     </Stack>
                 </DialogContent>
                 <DialogActions>
-                    {/* Changed order here: Save first, then Cancel */}
-                    <Button type="submit" variant="contained" startIcon={<SaveIcon />}>
-                        {editingId ? 'Save' : 'Add'}
+                    <Button onClick={onClose} startIcon={<CancelIcon />}>{t('buttons.cancel')}</Button>
+                    <Button type="submit" variant="contained" startIcon={<AddIcon />}>
+                        {editingId ? t('buttons.save') : t('buttons.add')}
                     </Button>
-                    <Button onClick={onClose} startIcon={<CancelIcon />}>Cancel</Button>
                 </DialogActions>
             </Box>
         </Dialog>
