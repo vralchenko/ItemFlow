@@ -1,0 +1,15 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #f4f4f9; /* A light grey background for contrast */
+}
+
+/* This ensures the root element can center its content */
+#root {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Aligns the app to the top */
+    min-height: 100vh;
+}

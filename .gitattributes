@@ -1,0 +1,2 @@
+backend/uploads/*.png filter=lfs diff=lfs merge=lfs -text
+backend/uploads/*.jpg filter=lfs diff=lfs merge=lfs -text
