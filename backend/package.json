@@ -11,6 +11,7 @@
     "test:api": "playwright test"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "multer": "^2.0.2",

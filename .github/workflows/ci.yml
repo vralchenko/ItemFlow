@@ -15,6 +15,7 @@ jobs:
       DATABASE_PATH: ./test-database.sqlite
       PORT: 3001
       API_BASE_URL: http://localhost:3001
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
     steps:
       - name: Checkout repository

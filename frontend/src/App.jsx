@@ -17,6 +17,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import CategoryIcon from '@mui/icons-material/Category';
 
 function App() {
+    // Call the hook to get all state and logic
     const { t, i18n } = useTranslation();
     const {
         items,
@@ -30,9 +31,11 @@ function App() {
         editingId,
         errors,
         itemDialogOpen,
+        setItemDialogOpen,
         categoryDialogOpen,
         setCategoryDialogOpen,
         preview,
+        isSuggesting,
         handleOpenAddDialog,
         handleEdit,
         handleCancelEdit,
@@ -45,12 +48,14 @@ function App() {
         handleAddCategory,
         handleUpdateCategory,
         handleDeleteCategory,
+        handleSuggestName,
     } = useItemManager();
 
     const changeLanguage = (lng) => {
         i18n.changeLanguage(lng);
     };
 
+    // The component is now only responsible for rendering the UI
     return (
         <>
             <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
@@ -125,6 +130,8 @@ function App() {
                 errors={errors}
                 preview={preview}
                 categories={categories}
+                onSuggestName={handleSuggestName}
+                isSuggesting={isSuggesting}
             />
             <CategoryManagerDialog
                 open={categoryDialogOpen}

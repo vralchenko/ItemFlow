@@ -2,25 +2,19 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
     Button, Dialog, DialogActions, DialogContent, DialogTitle,
-    Box, Stack, TextField, Select, MenuItem, InputLabel, FormControl
+    Box, Stack, TextField, Select, MenuItem, InputLabel, FormControl,
+    IconButton, InputAdornment, CircularProgress
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 
 const ItemFormDialog = ({
-                            open,
-                            onClose,
-                            onSubmit,
-                            formData,
-                            onInputChange,
-                            onFileChange,
-                            editingId,
-                            errors,
-                            preview,
-                            categories
+                            open, onClose, onSubmit, formData, onInputChange, onFileChange,
+                            editingId, errors, preview, categories,
+                            onSuggestName, isSuggesting,
                         }) => {
     const { t } = useTranslation();
-
     return (
         <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
             <DialogTitle>{editingId ? t('dialogs.editItemTitle') : t('dialogs.addItemTitle')}</DialogTitle>
@@ -32,11 +26,23 @@ const ItemFormDialog = ({
                             name="name"
                             value={formData.name}
                             onChange={onInputChange}
-                            fullWidth
-                            required
+                            fullWidth required
                             error={!!errors.name}
                             helperText={errors.name}
                             autoFocus
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="suggest name"
+                                            onClick={onSuggestName}
+                                            disabled={isSuggesting || !formData.category_id}
+                                        >
+                                            {isSuggesting ? <CircularProgress size={24} /> : <AutoAwesomeIcon />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                )
+                            }}
                         />
                         <FormControl fullWidth required error={!!errors.category_id}>
                             <InputLabel id="category-select-label">{t('form.category')}</InputLabel>
@@ -48,23 +54,13 @@ const ItemFormDialog = ({
                                 onChange={onInputChange}
                             >
                                 {categories.map((cat) => (
-                                    <MenuItem key={cat.id} value={cat.id}>
-                                        {cat.name}
-                                    </MenuItem>
+                                    <MenuItem key={cat.id} value={cat.id}>{cat.name}</MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
-                        <Button
-                            variant="outlined"
-                            component="label"
-                        >
+                        <Button variant="outlined" component="label">
                             {t('form.uploadImage')}
-                            <input
-                                type="file"
-                                hidden
-                                accept="image/*"
-                                onChange={onFileChange}
-                            />
+                            <input type="file" hidden accept="image/*" onChange={onFileChange} />
                         </Button>
                         {preview && (
                             <Box sx={{ textAlign: 'center' }}>
