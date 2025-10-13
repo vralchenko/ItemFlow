@@ -122,7 +122,6 @@ You need to run two servers simultaneously in two separate terminals.
 
 ### Running the Backend
 
-# In your /backend terminal
 ```bash
     npm start
 ```
@@ -130,7 +129,6 @@ The server will be available at http://localhost:3001.
 
 ### Running the Frontend
 
-# In your /frontend terminal
 ```bash
   npm run dev
 ```
@@ -142,7 +140,6 @@ The project is covered by two types of tests using Playwright. A separate, isola
 1. Preparing the Test Environment
 Before running tests for the first time, you must create the test database.
 
-# In the /backend terminal
 ```bash
   npm run test:init-db
 ```
@@ -153,13 +150,11 @@ These tests check the API endpoints directly without a UI.
 
 Start the backend in test mode (in your first terminal):
 
-# In the /backend folder
 ```bash
   npm run start:test
 ```
 Run the tests (in a second terminal):
 
-# In the /backend folder
 ```bash
   npm run test:api
 ```
@@ -168,13 +163,11 @@ These tests simulate real user interactions in a browser.
 
 Start the backend in test mode (in your first terminal):
 
-# In the /backend folder
 ```bash
   npm run start:test
 ```
 Run the tests (in a second terminal):
 
-# In the /frontend folder
 ```bash
   npx playwright test
 ```
@@ -184,14 +177,12 @@ After running either Playwright test suite, you can view a detailed HTML report:
 
 For API tests:
 
-# In the /backend folder
 ```bash
   npx playwright show-report
 ```
 
 For E2E tests:
 
-# In the /frontend folder
 ```bash
   npx playwright show-report
 ```
