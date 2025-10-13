@@ -4,7 +4,6 @@ import { toast } from 'react-toastify';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-// A custom hook starts with the word "use"
 export function useItemManager() {
     // All state is managed inside the hook
     const [items, setItems] = useState([]);
@@ -20,6 +19,7 @@ export function useItemManager() {
     const [categoryDialogOpen, setCategoryDialogOpen] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
     const [preview, setPreview] = useState(null);
+    const [isSuggesting, setIsSuggesting] = useState(false);
 
     // All data fetching and logic functions are also here
     const fetchItems = useCallback(async () => {
@@ -141,7 +141,9 @@ export function useItemManager() {
         const data = new FormData();
         data.append('name', formData.name);
         data.append('category_id', formData.category_id);
-        if (selectedFile) data.append('image', selectedFile);
+        if (selectedFile) {
+            data.append('image', selectedFile);
+        }
 
         try {
             if (editingId) {
@@ -174,6 +176,29 @@ export function useItemManager() {
         setPage(value);
     };
 
+    const handleSuggestName = async () => {
+        const category = categories.find(c => c.id === formData.category_id);
+        if (!category) {
+            toast.warn("Please select a category first.");
+            return;
+        }
+
+        setIsSuggesting(true);
+        try {
+            const response = await axios.post(`${API_BASE_URL}/api/ai/suggest-name`, {
+                categoryName: category.name
+            });
+            const suggestions = response.data;
+            if (suggestions && suggestions.length > 0) {
+                setFormData(prev => ({ ...prev, name: suggestions[0] }));
+            }
+        } catch (error) {
+            toast.error("Could not get a suggestion.");
+        } finally {
+            setIsSuggesting(false);
+        }
+    };
+
     // The hook returns everything the UI component needs
     return {
         items,
@@ -191,6 +216,7 @@ export function useItemManager() {
         categoryDialogOpen,
         setCategoryDialogOpen,
         preview,
+        isSuggesting,
         handleOpenAddDialog,
         handleEdit,
         handleCancelEdit,
@@ -203,5 +229,6 @@ export function useItemManager() {
         handleAddCategory,
         handleUpdateCategory,
         handleDeleteCategory,
+        handleSuggestName,
     };
 }
