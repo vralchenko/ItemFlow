@@ -1,15 +1,15 @@
 {
-  "headerTitle": "Item Flow",
+  "appTitle": "Item Flow",
   "manageCategories": "Manage Categories",
   "addNewItem": "Add New Item",
-  "filterPlaceholder": "Filter by name...",
+  "filterByName": "Filter by name...",
   "totalItemsFound": "Total items found: {{count}}",
   "dialogs": {
     "addItemTitle": "Add New Item",
     "editItemTitle": "Edit Item",
     "manageCategoriesTitle": "Manage Categories",
     "newCategoryName": "New Category Name",
-    "existingCategories": "Existing Categories:"
+    "existingCategories": "Existing Categories"
   },
   "form": {
     "itemName": "Item Name",
