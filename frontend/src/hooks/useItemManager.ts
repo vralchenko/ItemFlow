@@ -1,31 +1,45 @@
-import { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
+import { useState, useEffect, useCallback, ChangeEvent, FormEvent } from 'react';
+import axios, { isAxiosError } from 'axios';
 import { toast } from 'react-toastify';
+import { Item, Category } from '../types';
+import { SelectChangeEvent } from '@mui/material'; // This import is added
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+
+interface FormData {
+    name: string;
+    category_id: string;
+}
+
+interface FormErrors {
+    name?: string;
+    category_id?: string;
+}
 
 export function useItemManager() {
-    // All state is managed inside the hook
-    const [items, setItems] = useState([]);
-    const [categories, setCategories] = useState([]);
-    const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
-    const [totalItems, setTotalItems] = useState(0);
-    const [filter, setFilter] = useState('');
-    const [formData, setFormData] = useState({ name: '', category_id: '' });
-    const [editingId, setEditingId] = useState(null);
-    const [errors, setErrors] = useState({});
-    const [itemDialogOpen, setItemDialogOpen] = useState(false);
-    const [categoryDialogOpen, setCategoryDialogOpen] = useState(false);
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [preview, setPreview] = useState(null);
-    const [isSuggesting, setIsSuggesting] = useState(false);
+    const [items, setItems] = useState<Item[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [page, setPage] = useState<number>(1);
+    const [totalPages, setTotalPages] = useState<number>(1);
+    const [totalItems, setTotalItems] = useState<number>(0);
+    const [filter, setFilter] = useState<string>('');
+    const [formData, setFormData] = useState<FormData>({ name: '', category_id: '' });
+    const [editingId, setEditingId] = useState<string | null>(null);
+    const [errors, setErrors] = useState<FormErrors>({});
+    const [itemDialogOpen, setItemDialogOpen] = useState<boolean>(false);
+    const [categoryDialogOpen, setCategoryDialogOpen] = useState<boolean>(false);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [preview, setPreview] = useState<string | null>(null);
+    const [isSuggesting, setIsSuggesting] = useState<boolean>(false);
 
-    // All data fetching and logic functions are also here
     const fetchItems = useCallback(async () => {
         try {
             const params = { page, filter, limit: 5 };
-            const response = await axios.get(`${API_BASE_URL}/api/items`, { params });
+            const response = await axios.get<{
+                items: Item[];
+                totalPages: number;
+                totalItems: number;
+            }>(`${API_BASE_URL}/api/items`, { params });
             setItems(response.data.items);
             setTotalPages(response.data.totalPages);
             setTotalItems(response.data.totalItems);
@@ -36,7 +50,7 @@ export function useItemManager() {
 
     const fetchCategories = useCallback(async () => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/api/categories`);
+            const response = await axios.get<Category[]>(`${API_BASE_URL}/api/categories`);
             setCategories(response.data);
         } catch (error) {
             toast.error("Failed to fetch categories.");
@@ -44,67 +58,81 @@ export function useItemManager() {
     }, []);
 
     useEffect(() => {
-        fetchItems();
-        fetchCategories();
+        const loadData = async () => {
+            await fetchItems();
+            await fetchCategories();
+        };
+        void loadData();
     }, [fetchItems, fetchCategories]);
 
-    const handleAddCategory = async (name) => {
+    const handleAddCategory = async (name: string) => {
         try {
             await axios.post(`${API_BASE_URL}/api/categories`, { name });
             toast.success("Category added!");
-            fetchCategories();
+            await fetchCategories();
         } catch (error) {
-            toast.error(error.response?.data?.error || "Failed to add category.");
+            if (isAxiosError(error) && error.response) {
+                toast.error(error.response.data.error || "Failed to add category.");
+            } else {
+                toast.error("Failed to add category.");
+            }
         }
     };
 
-    const handleUpdateCategory = async (id, name) => {
+    const handleUpdateCategory = async (id: string, name: string) => {
         try {
             await axios.put(`${API_BASE_URL}/api/categories/${id}`, { name });
             toast.success("Category updated!");
-            fetchCategories();
-            fetchItems();
+            await fetchCategories();
+            await fetchItems();
         } catch (error) {
-            toast.error(error.response?.data?.error || "Failed to update category.");
+            if (isAxiosError(error) && error.response) {
+                toast.error(error.response.data.error || "Failed to update category.");
+            } else {
+                toast.error("Failed to update category.");
+            }
         }
     };
 
-    const handleDeleteCategory = async (id) => {
+    const handleDeleteCategory = async (id: string) => {
         if (window.confirm("Deleting a category will un-categorize associated items. Continue?")) {
             try {
                 await axios.delete(`${API_BASE_URL}/api/categories/${id}`);
                 toast.success("Category deleted!");
-                fetchCategories();
-                fetchItems();
+                await fetchCategories();
+                await fetchItems();
             } catch (error) {
                 toast.error("Failed to delete category.");
             }
         }
     };
 
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
         if (value) {
-            setErrors(prev => ({ ...prev, [name]: '' }));
+            setErrors(prev => ({ ...prev, [name]: undefined }));
         }
     };
 
-    const handleFileChange = (e) => {
+    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
             setSelectedFile(file);
+            if (preview) {
+                URL.revokeObjectURL(preview);
+            }
             setPreview(URL.createObjectURL(file));
         }
     };
 
-    const handleFilterChange = (e) => {
+    const handleFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
         setFilter(e.target.value);
         setPage(1);
     };
 
-    const validateItemForm = () => {
-        let tempErrors = {};
+    const validateItemForm = (): boolean => {
+        const tempErrors: FormErrors = {};
         if (!formData.name.trim()) tempErrors.name = "Item name is required.";
         if (!formData.category_id) tempErrors.category_id = "Category is required.";
         setErrors(tempErrors);
@@ -116,7 +144,7 @@ export function useItemManager() {
         setItemDialogOpen(true);
     };
 
-    const handleEdit = (item) => {
+    const handleEdit = (item: Item) => {
         setEditingId(item.id);
         const categoryObj = categories.find(c => c.name === item.category);
         setFormData({ name: item.name, category_id: categoryObj ? categoryObj.id : '' });
@@ -130,11 +158,12 @@ export function useItemManager() {
         setEditingId(null);
         setErrors({});
         setSelectedFile(null);
+        if (preview) URL.revokeObjectURL(preview);
         setPreview(null);
         setItemDialogOpen(false);
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!validateItemForm()) return;
 
@@ -154,25 +183,25 @@ export function useItemManager() {
                 toast.success("Item added successfully!");
             }
             handleCancelEdit();
-            fetchItems();
+            await fetchItems();
         } catch (error) {
             toast.error("An error occurred while saving the item.");
         }
     };
 
-    const handleDelete = async (id) => {
+    const handleDelete = async (id: string) => {
         if (window.confirm("Are you sure you want to delete this item?")) {
             try {
                 await axios.delete(`${API_BASE_URL}/api/items/${id}`);
                 toast.success("Item deleted successfully!");
-                fetchItems();
+                await fetchItems();
             } catch (error) {
                 toast.error("Failed to delete item.");
             }
         }
     };
 
-    const handlePageChange = (event, value) => {
+    const handlePageChange = (_event: ChangeEvent<unknown>, value: number) => {
         setPage(value);
     };
 
@@ -185,7 +214,7 @@ export function useItemManager() {
 
         setIsSuggesting(true);
         try {
-            const response = await axios.post(`${API_BASE_URL}/api/ai/suggest-name`, {
+            const response = await axios.post<string[]>(`${API_BASE_URL}/api/ai/suggest-name`, {
                 categoryName: category.name
             });
             const suggestions = response.data;
@@ -199,7 +228,6 @@ export function useItemManager() {
         }
     };
 
-    // The hook returns everything the UI component needs
     return {
         items,
         categories,
