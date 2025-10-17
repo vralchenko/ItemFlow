@@ -1,8 +1,34 @@
-const { test, expect } = require('playwright/test');
-const fs = require('fs');
-const path = require('path');
+import { test, expect, APIRequestContext } from '@playwright/test';
+import * as fs from 'fs';
+import * as path from 'path';
+import { fileURLToPath } from 'url';
 
-test.beforeEach(async ({ request }) => {
+// Define __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// --- Type Definitions for API Payloads ---
+interface Category {
+    id: string;
+    name: string;
+}
+
+interface Item {
+    id: string;
+    name: string;
+    category_id: string;
+    image: string | null;
+    category?: string; // Optional because it's joined
+}
+
+interface ItemsResponse {
+    totalItems: number;
+    items: Item[];
+    totalPages: number;
+    currentPage: number;
+}
+
+test.beforeEach(async ({ request }: { request: APIRequestContext }) => {
     const response = await request.post('/api/test/reset');
     expect(response.ok()).toBeTruthy();
 });
@@ -13,24 +39,21 @@ test.describe('Categories API', () => {
             data: { name: 'Electronics' }
         });
         expect(response.status()).toBe(201);
-        const newCategory = await response.json();
+        const newCategory: Category = await response.json();
         expect(newCategory.name).toBe('Electronics');
         expect(newCategory).toHaveProperty('id');
     });
 
     test('should update a category name', async ({ request }) => {
-        // 1. Create a category to update
         const createRes = await request.post('/api/categories', { data: { name: 'Old Name' } });
-        const category = await createRes.json();
+        const category: Category = await createRes.json();
 
-        // 2. Send the PUT request to update it
         const updateRes = await request.put(`/api/categories/${category.id}`, {
             data: { name: 'New Updated Name' }
         });
         expect(updateRes.ok()).toBeTruthy();
 
-        // 3. Verify the response contains the new name
-        const updatedCategory = await updateRes.json();
+        const updatedCategory: Category = await updateRes.json();
         expect(updatedCategory.name).toBe('New Updated Name');
     });
 
@@ -40,7 +63,7 @@ test.describe('Categories API', () => {
 
         const response = await request.get('/api/categories');
         expect(response.ok()).toBeTruthy();
-        const categories = await response.json();
+        const categories: Category[] = await response.json();
 
         expect(categories).toEqual(expect.arrayContaining([
             expect.objectContaining({ name: 'Books' }),
@@ -60,13 +83,13 @@ test.describe('Categories API', () => {
 
 
 test.describe('Items API', () => {
-    let testCategoryId;
+    let testCategoryId: string;
 
     test.beforeEach(async ({ request }) => {
         const response = await request.post('/api/categories', {
             data: { name: 'Test Category' }
         });
-        const category = await response.json();
+        const category: Category = await response.json();
         testCategoryId = category.id;
     });
 
@@ -78,19 +101,17 @@ test.describe('Items API', () => {
             multipart: {
                 name: 'Test Item with Image',
                 category_id: testCategoryId,
-                image: {
-                    name: 'test-image.png',
-                    mimeType: 'image/png',
-                    buffer: fs.readFileSync(imagePath),
-                },
+                image: fs.createReadStream(imagePath),
             }
         });
 
         expect(response.status()).toBe(201);
-        const newItem = await response.json();
+        const newItem: Item = await response.json();
         expect(newItem.name).toBe('Test Item with Image');
         expect(newItem.category).toBe('Test Category');
         expect(newItem.image).toContain('image-');
+
+        fs.unlinkSync(imagePath); // Clean up the fake image
     });
 
     test('should retrieve a list of items', async ({ request }) => {
@@ -100,7 +121,7 @@ test.describe('Items API', () => {
 
         const response = await request.get('/api/items');
         expect(response.ok()).toBeTruthy();
-        const body = await response.json();
+        const body: ItemsResponse = await response.json();
         expect(body.items).toHaveLength(1);
         expect(body.items[0].name).toBe('My Book');
     });
@@ -109,7 +130,7 @@ test.describe('Items API', () => {
         const createRes = await request.post('/api/items', {
             data: { name: 'Old Name', category_id: testCategoryId }
         });
-        const item = await createRes.json();
+        const item: Item = await createRes.json();
 
         const updateResponse = await request.put(`/api/items/${item.id}`, {
             data: {
@@ -119,7 +140,7 @@ test.describe('Items API', () => {
         });
 
         expect(updateResponse.ok()).toBeTruthy();
-        const updatedItem = await updateResponse.json();
+        const updatedItem: Item = await updateResponse.json();
         expect(updatedItem.name).toBe('New Updated Name');
     });
 
@@ -127,13 +148,13 @@ test.describe('Items API', () => {
         const createRes = await request.post('/api/items', {
             data: { name: 'Item to Delete', category_id: testCategoryId }
         });
-        const item = await createRes.json();
+        const item: Item = await createRes.json();
 
         const deleteResponse = await request.delete(`/api/items/${item.id}`);
         expect(deleteResponse.status()).toBe(204);
 
         const getResponse = await request.get('/api/items');
-        const body = await getResponse.json();
+        const body: ItemsResponse = await getResponse.json();
         expect(body.items).toHaveLength(0);
     });
 

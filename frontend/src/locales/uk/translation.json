@@ -1,15 +1,15 @@
 {
-  "headerTitle": "Потік Елементів",
+  "appTitle": "Потік Елементів",
   "manageCategories": "Керування категоріями",
   "addNewItem": "Додати елемент",
-  "filterPlaceholder": "Фільтр за назвою...",
+  "filterByName": "Фільтр за назвою...",
   "totalItemsFound": "Всього знайдено елементів: {{count}}",
   "dialogs": {
     "addItemTitle": "Додати новий елемент",
     "editItemTitle": "Редагувати елемент",
     "manageCategoriesTitle": "Керування категоріями",
     "newCategoryName": "Назва нової категорії",
-    "existingCategories": "Існуючі категорії:"
+    "existingCategories": "Існуючі категорії"
   },
   "form": {
     "itemName": "Назва елемента",
