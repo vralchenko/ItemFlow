@@ -8,10 +8,11 @@
     "build": "tsc",
     "start": "cross-env NODE_ENV=production node dist/server.js",
     "dev": "cross-env NODE_ENV=development nodemon --watch 'src/**/*.ts' --exec 'tsx' src/server.ts",
-    "dev:test": "cross-env NODE_ENV=test nodemon --watch 'src/**/*.ts' --exec 'tsx' src/server.ts",
+    "start:test": "cross-env NODE_ENV=test tsx src/server.ts",
     "db:init": "cross-env NODE_ENV=development tsx src/init-db.ts",
     "test:init-db": "rm -f ./test-database.sqlite && cross-env NODE_ENV=test tsx src/init-db.ts",
-    "test:api": "playwright test"
+    "test:api": "playwright test",
+    "test:ci": "npm run start:test & wait-on http://localhost:3001 && npm run test:api"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
@@ -31,7 +32,8 @@
     "dotenv": "^16.4.5",
     "nodemon": "^3.1.0",
     "tsx": "^4.16.2",
-    "typescript": "^5.5.2"
+    "typescript": "^5.5.2",
+    "wait-on": "^7.2.0"
   },
   "keywords": [],
   "author": "",
