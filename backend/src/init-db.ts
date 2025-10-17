@@ -1,20 +1,25 @@
-const { open } = require('sqlite');
-const sqlite3 = require('sqlite3').verbose();
-const crypto = require('crypto');
+import { open } from 'sqlite';
+import sqlite3 from 'sqlite3';
+import crypto from 'crypto';
+import dotenv from 'dotenv';
 
-// Explicitly load the correct .env file based on NODE_ENV
-require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` });
+dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
 async function setup() {
+    const dbPath = process.env.DATABASE_PATH;
+    if (!dbPath) {
+        console.error("Error: DATABASE_PATH environment variable is not set.");
+        process.exit(1);
+    }
+
     try {
         const db = await open({
-            filename: process.env.DATABASE_PATH || './database.sqlite',
+            filename: dbPath,
             driver: sqlite3.Database
         });
 
         await db.exec('PRAGMA foreign_keys=ON;');
 
-        // --- Table Creation ---
         await db.exec(`
             CREATE TABLE IF NOT EXISTS categories (
                 id TEXT PRIMARY KEY,
@@ -32,13 +37,13 @@ async function setup() {
             )
         `);
 
-        // --- Seed Data ---
         await db.exec('BEGIN TRANSACTION;');
 
         const categories = [
             { id: crypto.randomUUID(), name: 'Electronics' },
             { id: crypto.randomUUID(), name: 'Books' },
-            { id: crypto.randomUUID(), name: 'Groceries' }
+            { id: crypto.randomUUID(), name: 'Groceries' },
+            { id: crypto.randomUUID(), name: 'Tropical Fruits' }
         ];
 
         const categoryStmt = await db.prepare('INSERT OR IGNORE INTO categories (id, name) VALUES (?, ?)');
@@ -49,13 +54,20 @@ async function setup() {
 
         const electronicsCat = categories.find(c => c.name === 'Electronics');
         const booksCat = categories.find(c => c.name === 'Books');
+        const groceriesCat = categories.find(c => c.name === 'Groceries');
+        const fruitsCat = categories.find(c => c.name === 'Tropical Fruits');
+
+        if (!electronicsCat || !booksCat || !groceriesCat || !fruitsCat) {
+            throw new Error("A required category was not found after seeding.");
+        }
 
         const items = [
             { id: crypto.randomUUID(), name: 'Wireless Mouse', category_id: electronicsCat.id, image: '' },
             { id: crypto.randomUUID(), name: 'The Pragmatic Programmer', category_id: booksCat.id, image: '' },
-            { id: crypto.randomUUID(), name: 'Milk', category_id: categories.find(c => c.name === 'Groceries').id, image: '' },
+            { id: crypto.randomUUID(), name: 'Milk', category_id: groceriesCat.id, image: '' },
             { id: crypto.randomUUID(), name: 'Standalone Keyboard', category_id: electronicsCat.id, image: '' },
-            { id: crypto.randomUUID(), name: 'Uncategorized Item', category_id: null, image: '' }
+            { id: crypto.randomUUID(), name: 'Apple', category_id: fruitsCat.id, image: '' },
+            { id: crypto.randomUUID(), name: 'Banana', category_id: fruitsCat.id, image: '' }
         ];
 
         const itemStmt = await db.prepare('INSERT OR IGNORE INTO items (id, name, category_id, image) VALUES (?, ?, ?, ?)');
@@ -70,6 +82,7 @@ async function setup() {
         await db.close();
     } catch (err) {
         console.error('Error setting up the database:', err);
+        process.exit(1);
     }
 }
 

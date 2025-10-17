@@ -1,20 +1,56 @@
-import React from 'react';
+import React, { ChangeEvent, FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
     Button, Dialog, DialogActions, DialogContent, DialogTitle,
     Box, Stack, TextField, Select, MenuItem, InputLabel, FormControl,
-    IconButton, InputAdornment, CircularProgress
+    IconButton, InputAdornment, CircularProgress, SelectChangeEvent
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import { Category } from '../types';
 
-const ItemFormDialog = ({
-                            open, onClose, onSubmit, formData, onInputChange, onFileChange,
-                            editingId, errors, preview, categories,
-                            onSuggestName, isSuggesting,
-                        }) => {
+interface FormData {
+    name: string;
+    category_id: string;
+}
+
+interface FormErrors {
+    name?: string;
+    category_id?: string;
+}
+
+interface ItemFormDialogProps {
+    open: boolean;
+    onClose: () => void;
+    onSubmit: (e: FormEvent<HTMLFormElement>) => void;
+    formData: FormData;
+    onInputChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent) => void;
+    onFileChange: (e: ChangeEvent<HTMLInputElement>) => void;
+    editingId: string | null;
+    errors: FormErrors;
+    preview: string | null;
+    categories: Category[];
+    onSuggestName: () => void;
+    isSuggesting: boolean;
+}
+
+const ItemFormDialog: React.FC<ItemFormDialogProps> = ({
+                                                           open,
+                                                           onClose,
+                                                           onSubmit,
+                                                           formData,
+                                                           onInputChange,
+                                                           onFileChange,
+                                                           editingId,
+                                                           errors,
+                                                           preview,
+                                                           categories,
+                                                           onSuggestName,
+                                                           isSuggesting,
+                                                       }) => {
     const { t } = useTranslation();
+
     return (
         <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
             <DialogTitle>{editingId ? t('dialogs.editItemTitle') : t('dialogs.addItemTitle')}</DialogTitle>
@@ -26,7 +62,8 @@ const ItemFormDialog = ({
                             name="name"
                             value={formData.name}
                             onChange={onInputChange}
-                            fullWidth required
+                            fullWidth
+                            required
                             error={!!errors.name}
                             helperText={errors.name}
                             autoFocus

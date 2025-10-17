@@ -1,15 +1,15 @@
 {
-  "headerTitle": "Artikel-Fluss",
+  "appTitle": "Artikel-Fluss",
   "manageCategories": "Kategorien verwalten",
   "addNewItem": "Neuen Artikel hinzufügen",
-  "filterPlaceholder": "Nach Namen filtern...",
+  "filterByName": "Nach Namen filtern...",
   "totalItemsFound": "Gefundene Artikel: {{count}}",
   "dialogs": {
     "addItemTitle": "Neuen Artikel hinzufügen",
     "editItemTitle": "Artikel bearbeiten",
     "manageCategoriesTitle": "Kategorien verwalten",
     "newCategoryName": "Neuer Kategoriename",
-    "existingCategories": "Bestehende Kategorien:"
+    "existingCategories": "Bestehende Kategorien"
   },
   "form": {
     "itemName": "Artikelname",

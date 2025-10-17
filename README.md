@@ -1,75 +1,56 @@
 # Item Flow
 
-**Item Flow** is a full-stack web application demonstrating a complete CRUD (Create, Read, Update, Delete) implementation. The application consists of a Node.js/Express backend and a React frontend.
+**Item Flow** is a full-stack web application for managing an item inventory. It has been fully migrated to **TypeScript** to demonstrate a modern, type-safe approach to web development using React and Node.js.
 
-This project serves as a comprehensive example covering API development, state management, form validation, filtering, pagination, file uploads, automated testing, and internationalization with AI-powered features.
+This project serves as a comprehensive example covering REST API development, state management, form validation, filtering, pagination, file uploads, automated testing, and internationalization with AI-powered features.
 
 ---
 ## 🚀 Key Features
 
-* **Item CRUD:** Full create, read, update, and delete operations for items.
-* **Category CRUD:** Separate management for categories, including creation, editing, and deletion.
-* **AI-Powered Suggestions:** Utilizes Google's Gemini AI to suggest creative names for new items based on their category.
-* **Relational Data:** Items are linked to categories via a dropdown selection.
-* **Filtering:** Real-time search for items by name with a "clear" button.
-* **Pagination:** Division of long lists into multiple pages with a total item count.
-* **Image Uploads:** Ability to attach images to items with a preview.
-* **Form Validation:** Checks for empty fields and duplicate entries.
-* **User Notifications (Toasts):** Pop-up messages indicating the success or failure of an operation.
-* **Localization (i18n):** Multi-language support (EN, DE, RU, UK) with automatic browser language detection.
-* **Polished UI:** The interface is built with the Material-UI component library.
-* **Comprehensive Testing:** Includes backend API tests and full end-to-end (E2E) tests.
+* **✅ Full TypeScript Migration:** All frontend, backend, and test code is fully typed for enhanced reliability and a superior developer experience.
+* **📦 Item & Category CRUD:** Full create, read, update, and delete operations for both items and categories.
+* **🤖 AI-Powered Suggestions:** Utilizes Google's Gemini AI to suggest creative names for new items based on their category.
+* **🔗 Relational Data:** Items are linked to categories via a dropdown selection.
+* **🔍 Real-time Search:** Filter items by both item name and category name, with a clear button.
+* **📄 Pagination:** Divides long lists into pages with a total item count.
+* **🖼️ Image Uploads:** Attach images to items with a file preview.
+* **🛡️ Form Validation:** Checks for empty fields and duplicate entries.
+* **🔔 User Notifications (Toasts):** Pop-up messages indicating the success or failure of operations.
+* **🌐 Localization (i18n):** Multi-language support (EN, DE, RU, UK) with automatic browser language detection.
+* **✨ Polished UI:** The interface is built with the Material-UI (MUI) component library.
+* **🧪 Comprehensive Testing:** Includes backend API tests and full end-to-end (E2E) tests using Playwright.
 
 ---
 ## 🛠️ Tech Stack
 
-### Backend
-* **Node.js**
-* **Express** — Web framework.
-* **SQLite** — File-based relational database.
-* **Multer** — Middleware for handling file uploads.
-* **Google Generative AI** — For AI-powered name suggestions via the Gemini API.
-* **dotenv** — For managing environment variables.
-* **Playwright** — For API testing.
-
-### Frontend
-* **React**
-* **Vite** — Build tool and development server.
-* **Material-UI (MUI)** — UI component library.
-* **Axios** — For making HTTP requests.
-* **react-toastify** — For toast notifications.
-* **react-i18next** & **i18next** — For internationalization.
-* **Playwright** — For End-to-End testing.
-
----
-## 🌍 Localization
-
-The application supports multiple languages and will automatically detect the user's browser language on the first visit. Users can also manually switch between supported languages using the language selector in the header.
-
-* **Supported Languages:** English (en), German (de), Russian (ru), Ukrainian (uk).
-* **Implementation:** Achieved using the `react-i18next` library.
-* **Translation Files:** All text strings are stored in JSON format located in the `frontend/src/locales/` directory.
+| Category      | Technologies                                                                 |
+| :------------ | :--------------------------------------------------------------------------- |
+| **Frontend** | React, **TypeScript**, Vite, Material-UI (MUI), Axios, react-toastify, i18next |
+| **Backend** | Node.js, Express, **TypeScript**, SQLite, Multer, Google Generative AI       |
+| **Testing** | Playwright (for both API and E2E tests)                                      |
+| **Tooling** | **tsx** (for running TypeScript on-the-fly), nodemon, cross-env                |
+| **CI/CD** | GitHub Actions                                                               |
 
 ---
 ## 📁 Project Structure
 
-The project is structured as a monorepo with two primary directories:
+The project is organized as a monorepo with two primary directories:
 
-* `backend/`: Contains the Node.js server application, including all API logic.
-* `frontend/`: Contains the React client application and all UI components.
+* `backend/`: Contains the Node.js server application, including all API logic, now fully written in TypeScript.
+* `frontend/`: Contains the React client application and all UI components, also fully written in TypeScript.
 
 ---
 ## ⚙️ Installation and Setup
 
 ### Prerequisites
 
-* **Node.js** (v18.x or higher)
+* **Node.js** (v20.x or higher)
 * **npm** (typically installed with Node.js)
-* **Google AI API Key** (for the AI suggestion feature)
+* A **Google AI API Key** (for the AI suggestion feature)
 
 ### Backend Setup
 
-1.  **Navigate to the backend folder**
+1.  **Navigate to the `backend` folder**
     ```bash
     cd backend
     ```
@@ -81,10 +62,9 @@ The project is structured as a monorepo with two primary directories:
 
 3.  **Create the environment file**
 
-    In the `backend` folder, create a file named `.env.development` and add the following content, replacing `your-gemini-api-key-here` with your actual key:
+    In the `backend` folder, create a file named `.env.development` and add the following, replacing `your-gemini-api-key-here` with your actual key:
     ```env
     PORT=3001
-    API_BASE_URL=http://localhost:3001
     DATABASE_PATH=./database.sqlite
     GEMINI_API_KEY="your-gemini-api-key-here"
     ```
@@ -98,7 +78,7 @@ The project is structured as a monorepo with two primary directories:
 
 ### Frontend Setup
 
-1.  **Navigate to the frontend folder** (in a separate terminal window)
+1.  **Navigate to the `frontend` folder** (in a separate terminal window)
     ```bash
     cd frontend
     ```
@@ -112,79 +92,71 @@ The project is structured as a monorepo with two primary directories:
 
     In the `frontend` folder, create a file named `.env` and add the following content:
     ```env
-    VITE_API_BASE_URL=http://localhost:3001
+    VITE_API_URL=http://localhost:3001
     ```
-
+    
 ---
-## 🚀 Running the Application
+## 🚀 Running the Application in Development Mode
 
 You need to run two servers simultaneously in two separate terminals.
 
 ### Running the Backend
 
-```bash
-    npm start
-```
-The server will be available at http://localhost:3001.
-
-### Running the Frontend
+In your first terminal (inside the `backend` folder):
 
 ```bash
   npm run dev
 ```
+
+The server will be available at http://localhost:3001.
+
+### Running the Frontend
+In your second terminal (inside the frontend folder):
+
+```bash
+  npm run dev
+```
+
 The application will open in your browser at http://localhost:5173.
 
 🧪 Testing
 The project is covered by two types of tests using Playwright. A separate, isolated database is used for all test runs.
 
-1. Preparing the Test Environment
-Before running tests for the first time, you must create the test database.
-
-```bash
-  npm run test:init-db
-```
-This command will create and seed the test-database.sqlite file.
-
-2. Running API Tests (Backend)
+1. Running API Tests (Backend)
 These tests check the API endpoints directly without a UI.
 
-Start the backend in test mode (in your first terminal):
+In your first terminal (inside the backend folder), start the server in test mode:
 
 ```bash
-  npm run start:test
+  npm run dev:test
 ```
-Run the tests (in a second terminal):
+
+In your second terminal (inside the backend folder), run the test command:
 
 ```bash
   npm run test:api
 ```
-3. Running End-to-End (E2E) Tests (Frontend)
+
+2. Running End-to-End (E2E) Tests (Frontend)
 These tests simulate real user interactions in a browser.
 
-Start the backend in test mode (in your first terminal):
+In your first terminal (inside the backend folder), start the server in test mode:
 
 ```bash
-  npm run start:test
+  npm run dev:test
 ```
-Run the tests (in a second terminal):
+
+In your second terminal (inside the frontend folder), run the test command:
 
 ```bash
   npx playwright test
 ```
 
-4. Viewing Reports
-After running either Playwright test suite, you can view a detailed HTML report:
+Playwright will automatically launch the frontend server, open a browser, and run the tests.
 
-For API tests:
-
-```bash
-  npx playwright show-report
-```
-
-For E2E tests:
+3. Viewing Reports
+After running either test suite, you can view a detailed HTML report. In the corresponding folder (backend or frontend), run:
 
 ```bash
   npx playwright show-report
 ```
-
-The report will open in your browser, showing all test steps, screenshots, and network trace information.

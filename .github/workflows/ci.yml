@@ -41,13 +41,6 @@ jobs:
         working-directory: ./backend
         run: npm run test:init-db
 
-      - name: Start server in test mode
+      - name: Run server and API tests
         working-directory: ./backend
-        run: npm run start:test &
-
-      - name: Wait for server to be ready
-        run: sleep 10
-
-      - name: Run Playwright API tests
-        working-directory: ./backend
-        run: npm run test:api
+        run: npm run test:ci

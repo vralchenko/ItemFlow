@@ -6,22 +6,27 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ImageIcon from '@mui/icons-material/Image';
+import { Item } from '../types';
 
-const UPLOADS_URL = `${import.meta.env.VITE_API_BASE_URL}/uploads/`;
+const UPLOADS_URL = `${import.meta.env.VITE_API_URL}/uploads/`;
 
-const ItemList = ({ items, onEdit, onDelete }) => {
+interface ItemListProps {
+    items: Item[];
+    onEdit: (item: Item) => void;
+    onDelete: (id: string) => void;
+}
+
+const ItemList: React.FC<ItemListProps> = ({ items, onEdit, onDelete }) => {
     return (
         <List>
-            {items.map(item => (
+            {items.map((item) => (
                 <ListItem
                     key={item.id}
                     secondaryAction={
                         <>
-                            {/* ARIA-LABEL ADDED HERE */}
                             <IconButton aria-label="edit" edge="end" onClick={() => onEdit(item)}>
                                 <EditIcon />
                             </IconButton>
-                            {/* ARIA-LABEL ADDED HERE */}
                             <IconButton aria-label="delete" edge="end" onClick={() => onDelete(item.id)} sx={{ ml: 1 }}>
                                 <DeleteIcon />
                             </IconButton>
@@ -29,12 +34,12 @@ const ItemList = ({ items, onEdit, onDelete }) => {
                     }
                 >
                     <ListItemAvatar>
-                        <Avatar src={item.image ? `${UPLOADS_URL}${item.image}` : undefined}>
-                            {!item.image && <ImageIcon />}
+                        <Avatar src={item.image && item.image.length > 0 ? `${UPLOADS_URL}${item.image}` : undefined}>
+                            {(!item.image || item.image.length === 0) && <ImageIcon />}
                         </Avatar>
                     </ListItemAvatar>
                     <ListItemText
-                        primary={`${item.name} (${item.category})`}
+                        primary={`${item.name} (${item.category || 'Uncategorized'})`}
                     />
                 </ListItem>
             ))}

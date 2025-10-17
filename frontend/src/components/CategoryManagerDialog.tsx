@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
     Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, TextField,
@@ -8,14 +8,31 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { Category } from '../types';
 
-const CategoryManagerDialog = ({ open, onClose, categories, onAddCategory, onUpdateCategory, onDeleteCategory }) => {
+interface CategoryManagerDialogProps {
+    open: boolean;
+    onClose: () => void;
+    categories: Category[];
+    onAddCategory: (name: string) => void;
+    onUpdateCategory: (id: string, name: string) => void;
+    onDeleteCategory: (id: string) => void;
+}
+
+const CategoryManagerDialog: React.FC<CategoryManagerDialogProps> = ({
+                                                                         open,
+                                                                         onClose,
+                                                                         categories,
+                                                                         onAddCategory,
+                                                                         onUpdateCategory,
+                                                                         onDeleteCategory
+                                                                     }) => {
     const { t } = useTranslation();
-    const [newCategoryName, setNewCategoryName] = useState('');
-    const [addError, setAddError] = useState('');
-    const [editingCategoryId, setEditingCategoryId] = useState(null);
-    const [editingCategoryName, setEditingCategoryName] = useState('');
-    const [editError, setEditError] = useState('');
+    const [newCategoryName, setNewCategoryName] = useState<string>('');
+    const [addError, setAddError] = useState<string>('');
+    const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null);
+    const [editingCategoryName, setEditingCategoryName] = useState<string>('');
+    const [editError, setEditError] = useState<string>('');
 
     const handleAdd = () => {
         if (!newCategoryName.trim()) {
@@ -27,7 +44,7 @@ const CategoryManagerDialog = ({ open, onClose, categories, onAddCategory, onUpd
         setAddError('');
     };
 
-    const handleStartEdit = (category) => {
+    const handleStartEdit = (category: Category) => {
         setEditingCategoryId(category.id);
         setEditingCategoryName(category.name);
         setEditError('');
@@ -44,7 +61,9 @@ const CategoryManagerDialog = ({ open, onClose, categories, onAddCategory, onUpd
             setEditError('Name cannot be empty.');
             return;
         }
-        onUpdateCategory(editingCategoryId, editingCategoryName);
+        if (editingCategoryId) {
+            onUpdateCategory(editingCategoryId, editingCategoryName);
+        }
         handleCancelEdit();
     };
 
@@ -56,7 +75,7 @@ const CategoryManagerDialog = ({ open, onClose, categories, onAddCategory, onUpd
                     <TextField
                         label={t('dialogs.newCategoryName')}
                         value={newCategoryName}
-                        onChange={(e) => {
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
                             setNewCategoryName(e.target.value);
                             if (addError) setAddError('');
                         }}
@@ -70,13 +89,13 @@ const CategoryManagerDialog = ({ open, onClose, categories, onAddCategory, onUpd
                 </Box>
                 <Typography variant="subtitle1">{t('dialogs.existingCategories')}</Typography>
                 <List dense>
-                    {categories.map(cat => (
+                    {categories.map((cat: Category) => (
                         <ListItem key={cat.id}>
                             {editingCategoryId === cat.id ? (
                                 <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', gap: 1 }}>
                                     <TextField
                                         value={editingCategoryName}
-                                        onChange={(e) => {
+                                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
                                             setEditingCategoryName(e.target.value);
                                             if (editError) setEditError('');
                                         }}
