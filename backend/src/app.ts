@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import path from 'path';
 import dotenv from 'dotenv';
@@ -20,12 +20,10 @@ const __dirname = path.dirname(__filename);
 const rootDir = path.join(__dirname, '..');
 app.use('/uploads', express.static(path.join(rootDir, 'uploads')));
 
-// Health Check Endpoint
 app.get('/health', (_req, res) => {
     res.status(200).send('OK');
 });
 
-// API Routes
 app.use('/api/items', itemRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/ai', aiRoutes);
@@ -33,5 +31,10 @@ app.use('/api/ai', aiRoutes);
 if (process.env.NODE_ENV === 'test') {
     app.use('/api/test', testRoutes);
 }
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    console.error(">>> UNHANDLED ERROR!:", err);
+    res.status(500).json({ error: "An internal server error occurred." });
+});
 
 export default app;

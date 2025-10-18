@@ -1,9 +1,10 @@
-import React, { ChangeEvent } from 'react';
+import React, { useState, useCallback, ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useItems } from './hooks/useItems';
+import { useCategories } from './hooks/useCategories';
 import ItemList from './components/ItemList';
 import ItemFormDialog from './components/ItemFormDialog';
 import CategoryManagerDialog from './components/CategoryManagerDialog';
-import { useItemManager } from './hooks/useItemManager';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
@@ -13,42 +14,64 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import ClearIcon from '@mui/icons-material/Clear';
 import CategoryIcon from '@mui/icons-material/Category';
+import { Item } from './types';
 
 function App() {
     const { t, i18n } = useTranslation();
-
     const {
         items,
-        categories,
+        isLoading,
+        error,
         page,
         totalPages,
         filter,
         handleFilterChange,
-        formData,
-        editingId,
-        errors,
-        itemDialogOpen,
-        categoryDialogOpen,
-        setCategoryDialogOpen,
-        preview,
-        isSuggesting,
-        handleOpenAddDialog,
-        handleEdit,
-        handleCancelEdit,
-        handleSubmit,
-        handleDelete,
         handlePageChange,
-        handleInputChange,
-        handleFileChange,
-        handleAddCategory,
-        handleUpdateCategory,
-        handleDeleteCategory,
-        handleSuggestName,
-    } = useItemManager();
+        deleteItem,
+        fetchItems
+    } = useItems();
+    const {
+        categories,
+        addCategory,
+        updateCategory,
+        deleteCategory,
+        fetchCategories
+    } = useCategories();
+
+    const [isItemDialogOpen, setItemDialogOpen] = useState(false);
+    const [isCategoryDialogOpen, setCategoryDialogOpen] = useState(false);
+    const [editingItem, setEditingItem] = useState<Item | null>(null);
+
+    const handleOpenEditDialog = useCallback((item: Item) => {
+        setEditingItem(item);
+        setItemDialogOpen(true);
+    }, []);
+
+    const handleOpenAddDialog = () => {
+        setEditingItem(null);
+        setItemDialogOpen(true);
+    };
+
+    const handleItemDialogClose = () => {
+        setItemDialogOpen(false);
+    };
+
+    const handleItemSave = async () => {
+        setItemDialogOpen(false);
+        await fetchItems();
+    };
+
+    const handleCategoryDialogClose = async () => {
+        setCategoryDialogOpen(false);
+        await fetchItems();
+    };
 
     const changeLanguage = async (lng: string) => {
         await i18n.changeLanguage(lng);
     };
+
+    if (isLoading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
 
     return (
         <Container maxWidth="md">
@@ -102,8 +125,8 @@ function App() {
 
                 <ItemList
                     items={items}
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
+                    onEdit={handleOpenEditDialog}
+                    onDelete={deleteItem}
                 />
 
                 {totalPages > 1 && (
@@ -119,27 +142,20 @@ function App() {
             </Paper>
 
             <ItemFormDialog
-                open={itemDialogOpen}
-                onClose={handleCancelEdit}
-                onSubmit={handleSubmit}
-                formData={formData}
-                errors={errors}
+                open={isItemDialogOpen}
+                onClose={handleItemDialogClose}
+                onSave={handleItemSave}
+                editingItem={editingItem}
                 categories={categories}
-                onInputChange={handleInputChange}
-                onFileChange={handleFileChange}
-                preview={preview}
-                onSuggestName={handleSuggestName}
-                isSuggesting={isSuggesting}
-                editingId={editingId}
             />
 
             <CategoryManagerDialog
-                open={categoryDialogOpen}
-                onClose={() => setCategoryDialogOpen(false)}
+                open={isCategoryDialogOpen}
+                onClose={handleCategoryDialogClose}
                 categories={categories}
-                onAddCategory={handleAddCategory}
-                onUpdateCategory={handleUpdateCategory}
-                onDeleteCategory={handleDeleteCategory}
+                onAddCategory={addCategory}
+                onUpdateCategory={updateCategory}
+                onDeleteCategory={deleteCategory}
             />
 
             <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />

@@ -8,8 +8,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ImageIcon from '@mui/icons-material/Image';
 import { Item } from '../types';
 
-const UPLOADS_URL = `${import.meta.env.VITE_API_URL}/uploads/`;
-
 interface ItemListProps {
     items: Item[];
     onEdit: (item: Item) => void;
@@ -17,6 +15,16 @@ interface ItemListProps {
 }
 
 const ItemList: React.FC<ItemListProps> = ({ items, onEdit, onDelete }) => {
+    const getImageUrl = (imagePath: string | null): string | undefined => {
+        if (!imagePath) {
+            return undefined;
+        }
+        if (imagePath.startsWith('http')) {
+            return imagePath;
+        }
+        return `${import.meta.env.VITE_API_URL}/uploads/${imagePath}`;
+    };
+
     return (
         <List>
             {items.map((item) => (
@@ -34,8 +42,8 @@ const ItemList: React.FC<ItemListProps> = ({ items, onEdit, onDelete }) => {
                     }
                 >
                     <ListItemAvatar>
-                        <Avatar src={item.image && item.image.length > 0 ? `${UPLOADS_URL}${item.image}` : undefined}>
-                            {(!item.image || item.image.length === 0) && <ImageIcon />}
+                        <Avatar src={getImageUrl(item.image)}>
+                            {!item.image && <ImageIcon />}
                         </Avatar>
                     </ListItemAvatar>
                     <ListItemText

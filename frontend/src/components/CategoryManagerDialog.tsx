@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
     Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, TextField,
@@ -14,9 +14,9 @@ interface CategoryManagerDialogProps {
     open: boolean;
     onClose: () => void;
     categories: Category[];
-    onAddCategory: (name: string) => void;
-    onUpdateCategory: (id: string, name: string) => void;
-    onDeleteCategory: (id: string) => void;
+    onAddCategory: (name: string) => Promise<void>;
+    onUpdateCategory: (id: string, name: string) => Promise<void>;
+    onDeleteCategory: (id: string) => Promise<void>;
 }
 
 const CategoryManagerDialog: React.FC<CategoryManagerDialogProps> = ({
@@ -34,12 +34,20 @@ const CategoryManagerDialog: React.FC<CategoryManagerDialogProps> = ({
     const [editingCategoryName, setEditingCategoryName] = useState<string>('');
     const [editError, setEditError] = useState<string>('');
 
-    const handleAdd = () => {
+    useEffect(() => {
+        if (!open) {
+            setNewCategoryName('');
+            setAddError('');
+            handleCancelEdit();
+        }
+    }, [open]);
+
+    const handleAdd = async () => {
         if (!newCategoryName.trim()) {
             setAddError('Category name cannot be empty.');
             return;
         }
-        onAddCategory(newCategoryName);
+        await onAddCategory(newCategoryName);
         setNewCategoryName('');
         setAddError('');
     };
@@ -56,13 +64,13 @@ const CategoryManagerDialog: React.FC<CategoryManagerDialogProps> = ({
         setEditError('');
     };
 
-    const handleSaveEdit = () => {
+    const handleSaveEdit = async () => {
         if (!editingCategoryName.trim()) {
             setEditError('Name cannot be empty.');
             return;
         }
         if (editingCategoryId) {
-            onUpdateCategory(editingCategoryId, editingCategoryName);
+            await onUpdateCategory(editingCategoryId, editingCategoryName);
         }
         handleCancelEdit();
     };
@@ -89,7 +97,7 @@ const CategoryManagerDialog: React.FC<CategoryManagerDialogProps> = ({
                 </Box>
                 <Typography variant="subtitle1">{t('dialogs.existingCategories')}</Typography>
                 <List dense>
-                    {categories.map((cat: Category) => (
+                    {categories.map((cat) => (
                         <ListItem key={cat.id}>
                             {editingCategoryId === cat.id ? (
                                 <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', gap: 1 }}>
