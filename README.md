@@ -1,21 +1,28 @@
 # Item Flow
 
-**Item Flow** is a full-stack web application for managing an item inventory. It has been fully migrated to **TypeScript** to demonstrate a modern, type-safe approach to web development using React and Node.js.
+**Item Flow** is a full-stack web application for managing an item inventory, demonstrating a modern, type-safe, and professional approach to web development. The entire project, from frontend to backend and tests, is written in **TypeScript**.
 
-This project serves as a comprehensive example covering REST API development, state management, form validation, filtering, pagination, file uploads, automated testing, and internationalization with AI-powered features.
+Following best practices, the application's architecture was refactored to decompose a large "God hook" into smaller, single-responsibility hooks, significantly improving code modularity and maintainability.
+
+---
+## 🌐 Live Demo
+
+* **Frontend (Vercel):** [item-flow-rho.vercel.app](https://item-flow-rho.vercel.app/)
+* **Backend (Render):** [item-flow-backend.onrender.com/health](https://item-flow-backend.onrender.com/health)
+
+_Note: The backend is hosted on a free Render instance and may take up to 50 seconds to "wake up" on the first request._
 
 ---
 ## 🚀 Key Features
 
 * **✅ Full TypeScript Migration:** All frontend, backend, and test code is fully typed for enhanced reliability and a superior developer experience.
+* **🏗️ Refactored Architecture:** Decomposed a monolithic "God hook" into smaller, specialized hooks (`useItems`, `useCategories`) following the Single Responsibility Principle.
+* **📱 Responsive Design:** The UI is fully responsive and adapts seamlessly to mobile, tablet, and desktop screens.
+* **☁️ Cloud Image Uploads:** Utilizes **Cloudinary** for robust, cloud-based image storage and delivery, with a file preview.
+* **🤖 AI-Powered Suggestions:** Integrates Google's Gemini AI to suggest creative names for new items based on their category.
 * **📦 Item & Category CRUD:** Full create, read, update, and delete operations for both items and categories.
-* **🤖 AI-Powered Suggestions:** Utilizes Google's Gemini AI to suggest creative names for new items based on their category.
-* **🔗 Relational Data:** Items are linked to categories via a dropdown selection.
-* **🔍 Real-time Search:** Filter items by both item name and category name, with a clear button.
+* **🔍 Real-time Search:** Filter items by both item name and category name.
 * **📄 Pagination:** Divides long lists into pages with a total item count.
-* **🖼️ Image Uploads:** Attach images to items with a file preview.
-* **🛡️ Form Validation:** Checks for empty fields and duplicate entries.
-* **🔔 User Notifications (Toasts):** Pop-up messages indicating the success or failure of operations.
 * **🌐 Localization (i18n):** Multi-language support (EN, DE, RU, UK) with automatic browser language detection.
 * **✨ Polished UI:** The interface is built with the Material-UI (MUI) component library.
 * **🧪 Comprehensive Testing:** Includes backend API tests and full end-to-end (E2E) tests using Playwright.
@@ -23,13 +30,13 @@ This project serves as a comprehensive example covering REST API development, st
 ---
 ## 🛠️ Tech Stack
 
-| Category      | Technologies                                                                 |
-| :------------ | :--------------------------------------------------------------------------- |
-| **Frontend** | React, **TypeScript**, Vite, Material-UI (MUI), Axios, react-toastify, i18next |
-| **Backend** | Node.js, Express, **TypeScript**, SQLite, Multer, Google Generative AI       |
-| **Testing** | Playwright (for both API and E2E tests)                                      |
-| **Tooling** | **tsx** (for running TypeScript on-the-fly), nodemon, cross-env                |
-| **CI/CD** | GitHub Actions                                                               |
+| Category      | Technologies                                                                                   |
+| :------------ | :--------------------------------------------------------------------------------------------- |
+| **Frontend** | React, **TypeScript**, Vite, Material-UI (MUI), Axios, react-toastify, i18next                   |
+| **Backend** | Node.js, Express, **TypeScript**, SQLite, **Cloudinary** (for image storage), Multer, Google Generative AI |
+| **Testing** | Playwright (for both API and E2E tests)                                                        |
+| **Tooling** | **tsx** (for running TypeScript on-the-fly), nodemon, cross-env, `wait-on`                         |
+| **Deployment**| **Vercel** (Frontend), **Render** (Backend), GitHub Actions (CI/CD)                                |
 
 ---
 ## 📁 Project Structure
@@ -46,7 +53,8 @@ The project is organized as a monorepo with two primary directories:
 
 * **Node.js** (v20.x or higher)
 * **npm** (typically installed with Node.js)
-* A **Google AI API Key** (for the AI suggestion feature)
+* A **Google AI API Key**
+* A **Cloudinary Account** (for Cloud Name, API Key, and API Secret)
 
 ### Backend Setup
 
@@ -62,16 +70,17 @@ The project is organized as a monorepo with two primary directories:
 
 3.  **Create the environment file**
 
-    In the `backend` folder, create a file named `.env.development` and add the following, replacing `your-gemini-api-key-here` with your actual key:
+    In the `backend` folder, create a file named `.env.development` and add the following, replacing placeholders with your actual keys:
     ```env
     PORT=3001
     DATABASE_PATH=./database.sqlite
-    GEMINI_API_KEY="your-gemini-api-key-here"
+    GEMINI_API_KEY="your-gemini-api-key"
+    CLOUDINARY_CLOUD_NAME="your-cloudinary-cloud-name"
+    CLOUDINARY_API_KEY="your-cloudinary-api-key"
+    CLOUDINARY_API_SECRET="your-cloudinary-api-secret"
     ```
 
 4.  **Create and seed the development database**
-
-    This command creates the `database.sqlite` file and populates it with initial data.
     ```bash
     npm run db:init
     ```
@@ -94,7 +103,7 @@ The project is organized as a monorepo with two primary directories:
     ```env
     VITE_API_URL=http://localhost:3001
     ```
-    
+
 ---
 ## 🚀 Running the Application in Development Mode
 
@@ -103,14 +112,13 @@ You need to run two servers simultaneously in two separate terminals.
 ### Running the Backend
 
 In your first terminal (inside the `backend` folder):
-
 ```bash
   npm run dev
 ```
 
 The server will be available at http://localhost:3001.
 
-### Running the Frontend
+Running the Frontend
 In your second terminal (inside the frontend folder):
 
 ```bash
@@ -120,7 +128,7 @@ In your second terminal (inside the frontend folder):
 The application will open in your browser at http://localhost:5173.
 
 🧪 Testing
-The project is covered by two types of tests using Playwright. A separate, isolated database is used for all test runs.
+The project is covered by two types of tests using Playwright. A separate, isolated database is used for all test runs. Note: You must add your GEMINI_API_KEY and CLOUDINARY_* keys to a .env.test file in the backend directory for tests to pass locally.
 
 1. Running API Tests (Backend)
 These tests check the API endpoints directly without a UI.
@@ -128,9 +136,8 @@ These tests check the API endpoints directly without a UI.
 In your first terminal (inside the backend folder), start the server in test mode:
 
 ```bash
-  npm run dev:test
+  npm run start:test
 ```
-
 In your second terminal (inside the backend folder), run the test command:
 
 ```bash
@@ -143,15 +150,13 @@ These tests simulate real user interactions in a browser.
 In your first terminal (inside the backend folder), start the server in test mode:
 
 ```bash
-  npm run dev:test
+  npm run start:test
 ```
-
 In your second terminal (inside the frontend folder), run the test command:
 
 ```bash
   npx playwright test
 ```
-
 Playwright will automatically launch the frontend server, open a browser, and run the tests.
 
 3. Viewing Reports
