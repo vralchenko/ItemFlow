@@ -5,7 +5,7 @@ import * as dotenv from 'dotenv';
 dotenv.config({ path: `.env.${process.env.NODE_ENV || 'test'}` });
 
 export default defineConfig({
-    testDir: './tests',
+    testDir: './src/tests',
     fullyParallel: false,
     reporter: 'html',
     workers: 1,
