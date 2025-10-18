@@ -2,8 +2,6 @@
 
 **Item Flow** is a full-stack web application for managing an item inventory, demonstrating a modern, type-safe, and professional approach to web development. The entire project, from frontend to backend and tests, is written in TypeScript.
 
-Following best practices, the application's architecture was refactored to decompose a large "God hook" into smaller, single-responsibility hooks, significantly improving code modularity and maintainability.
-
 ---
 ## 🌐 Live Demo
 
