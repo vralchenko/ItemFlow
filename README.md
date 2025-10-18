@@ -1,6 +1,6 @@
 # Item Flow
 
-**Item Flow** is a full-stack web application for managing an item inventory, demonstrating a modern, type-safe, and professional approach to web development. The entire project, from frontend to backend and tests, is written in **TypeScript**.
+**Item Flow** is a full-stack web application for managing an item inventory, demonstrating a modern, type-safe, and professional approach to web development. The entire project, from frontend to backend and tests, is written in TypeScript.
 
 Following best practices, the application's architecture was refactored to decompose a large "God hook" into smaller, single-responsibility hooks, significantly improving code modularity and maintainability.
 
@@ -30,13 +30,13 @@ _Note: The backend is hosted on a free Render instance and may take up to 50 sec
 ---
 ## 🛠️ Tech Stack
 
-| Category      | Technologies                                                                                   |
-| :------------ | :--------------------------------------------------------------------------------------------- |
-| **Frontend** | React, **TypeScript**, Vite, Material-UI (MUI), Axios, react-toastify, i18next                   |
-| **Backend** | Node.js, Express, **TypeScript**, SQLite, **Cloudinary** (for image storage), Multer, Google Generative AI |
-| **Testing** | Playwright (for both API and E2E tests)                                                        |
-| **Tooling** | **tsx** (for running TypeScript on-the-fly), nodemon, cross-env, `wait-on`                         |
-| **Deployment**| **Vercel** (Frontend), **Render** (Backend), GitHub Actions (CI/CD)                                |
+| Category      | Technologies                                                                                       |
+| :------------ |:---------------------------------------------------------------------------------------------------|
+| **Frontend** | React, TypeScript, Vite, Material-UI (MUI), Axios, react-toastify, i18next                         |
+| **Backend** | Node.js, Express, TypeScript, SQLite, Cloudinary (for image storage), Multer, Google Generative AI |
+| **Testing** | Playwright (for both API and E2E tests)                                                            |
+| **Tooling** | tsx (for running TypeScript on-the-fly), nodemon, cross-env, `wait-on`                             |
+| **Deployment**| Vercel (Frontend), Render (Backend), GitHub Actions (CI/CD)                                        |
 
 ---
 ## 📁 Project Structure
@@ -51,10 +51,10 @@ The project is organized as a monorepo with two primary directories:
 
 ### Prerequisites
 
-* **Node.js** (v20.x or higher)
-* **npm** (typically installed with Node.js)
-* A **Google AI API Key**
-* A **Cloudinary Account** (for Cloud Name, API Key, and API Secret)
+* Node.js (v20.x or higher)
+* npm (typically installed with Node.js)
+* Google AI API Key
+* Cloudinary Account (for Cloud Name, API Key, and API Secret)
 
 ### Backend Setup
 

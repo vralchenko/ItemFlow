@@ -34,7 +34,7 @@ function App() {
         categories,
         addCategory,
         updateCategory,
-        deleteCategory
+        deleteCategory,
     } = useCategories();
 
     const [isItemDialogOpen, setItemDialogOpen] = useState(false);
@@ -77,7 +77,7 @@ function App() {
             <Paper elevation={3} sx={{ p: { xs: 2, sm: 3 }, mt: 4 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                     <h1>{t('appTitle')}</h1>
-                    <ButtonGroup variant="outlined" aria-label="language selection">
+                    <ButtonGroup variant="outlined" aria-label="language selection" size="small">
                         <Button onClick={() => changeLanguage('en')} disabled={i18n.language === 'en'}>EN</Button>
                         <Button onClick={() => changeLanguage('de')} disabled={i18n.language === 'de'}>DE</Button>
                         <Button onClick={() => changeLanguage('ru')} disabled={i18n.language === 'ru'}>RU</Button>
@@ -108,7 +108,7 @@ function App() {
                         variant="contained"
                         startIcon={<CategoryIcon />}
                         onClick={() => setCategoryDialogOpen(true)}
-                        sx={{ whiteSpace: 'nowrap', flexShrink: 0 }}
+                        sx={{ whiteSpace: 'nowrap' }}
                     >
                         {t('manageCategories')}
                     </Button>
@@ -116,7 +116,7 @@ function App() {
                         variant="contained"
                         startIcon={<AddIcon />}
                         onClick={handleOpenAddDialog}
-                        sx={{ whiteSpace: 'nowrap', flexShrink: 0 }}
+                        sx={{ whiteSpace: 'nowrap' }}
                     >
                         {t('addNewItem')}
                     </Button>
