@@ -108,7 +108,7 @@ function App() {
                         variant="contained"
                         startIcon={<CategoryIcon />}
                         onClick={() => setCategoryDialogOpen(true)}
-                        sx={{ whiteSpace: 'nowrap' }}
+                        sx={{ whiteSpace: 'nowrap', flexShrink: 0 }}
                     >
                         {t('manageCategories')}
                     </Button>
@@ -116,7 +116,7 @@ function App() {
                         variant="contained"
                         startIcon={<AddIcon />}
                         onClick={handleOpenAddDialog}
-                        sx={{ whiteSpace: 'nowrap' }}
+                        sx={{ whiteSpace: 'nowrap', flexShrink: 0 }}
                     >
                         {t('addNewItem')}
                     </Button>
