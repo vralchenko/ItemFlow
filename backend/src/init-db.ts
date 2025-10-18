@@ -62,12 +62,12 @@ async function setup() {
         }
 
         const items = [
-            { id: crypto.randomUUID(), name: 'Wireless Mouse', category_id: electronicsCat.id, image: '' },
-            { id: crypto.randomUUID(), name: 'The Pragmatic Programmer', category_id: booksCat.id, image: '' },
-            { id: crypto.randomUUID(), name: 'Milk', category_id: groceriesCat.id, image: '' },
-            { id: crypto.randomUUID(), name: 'Standalone Keyboard', category_id: electronicsCat.id, image: '' },
-            { id: crypto.randomUUID(), name: 'Apple', category_id: fruitsCat.id, image: '' },
-            { id: crypto.randomUUID(), name: 'Banana', category_id: fruitsCat.id, image: '' }
+            { id: crypto.randomUUID(), name: 'Wireless Mouse', category_id: electronicsCat.id, image: 'https://res.cloudinary.com/dy3ms7zlg/image/upload/v1760788264/item-flow/b9lql2ozhij0h3h4zilv.jpg' },
+            { id: crypto.randomUUID(), name: 'The Pragmatic Programmer', category_id: booksCat.id, image: 'https://res.cloudinary.com/dy3ms7zlg/image/upload/v1760788171/item-flow/hsnawhkbcenyayghbvip.jpg' },
+            { id: crypto.randomUUID(), name: 'Milk', category_id: groceriesCat.id, image: 'https://res.cloudinary.com/dy3ms7zlg/image/upload/v1760788142/item-flow/dctokwyhpijuxzuigrbb.jpg' },
+            { id: crypto.randomUUID(), name: 'Standalone Keyboard', category_id: electronicsCat.id, image: 'https://res.cloudinary.com/dy3ms7zlg/image/upload/v1760788161/item-flow/wbcbxex5ibigpboutkc8.jpg' },
+            { id: crypto.randomUUID(), name: 'Apple', category_id: fruitsCat.id, image: 'https://res.cloudinary.com/dy3ms7zlg/image/upload/v1760799492/item-flow/pg0wuoibx7qamo3pwfa6.jpg' },
+            { id: crypto.randomUUID(), name: 'Banana', category_id: fruitsCat.id, image: 'https://res.cloudinary.com/dy3ms7zlg/image/upload/v1760799504/item-flow/e5xo2pciwupxqpkmfdgc.jpg' }
         ];
 
         const itemStmt = await db.prepare('INSERT OR IGNORE INTO items (id, name, category_id, image) VALUES (?, ?, ?, ?)');
