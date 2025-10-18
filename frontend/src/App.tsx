@@ -34,8 +34,7 @@ function App() {
         categories,
         addCategory,
         updateCategory,
-        deleteCategory,
-        fetchCategories
+        deleteCategory
     } = useCategories();
 
     const [isItemDialogOpen, setItemDialogOpen] = useState(false);
@@ -75,7 +74,7 @@ function App() {
 
     return (
         <Container maxWidth="md">
-            <Paper elevation={3} sx={{ p: 3, mt: 4 }}>
+            <Paper elevation={3} sx={{ p: { xs: 2, sm: 3 }, mt: 4 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                     <h1>{t('appTitle')}</h1>
                     <ButtonGroup variant="outlined" aria-label="language selection">
@@ -86,7 +85,7 @@ function App() {
                     </ButtonGroup>
                 </Box>
 
-                <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mb: 2 }}>
                     <TextField
                         fullWidth
                         label={t('filterByName')}
