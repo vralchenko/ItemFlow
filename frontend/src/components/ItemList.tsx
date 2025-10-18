@@ -47,7 +47,7 @@ const ItemList: React.FC<ItemListProps> = ({ items, onEdit, onDelete }) => {
                         </Avatar>
                     </ListItemAvatar>
                     <ListItemText
-                        primary={`${item.name} (${item.category || 'Uncategorized'})`}
+                        primary={item.name} secondary={item.category || 'Uncategorized'}
                         sx={{ wordBreak: 'break-word' }}
                     />
                 </ListItem>
