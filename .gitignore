@@ -28,3 +28,5 @@
 
 # User-generated content
 /backend/uploads/
+
+package-lock.json
