@@ -20,7 +20,7 @@ export const suggestItemName = async (req: Request<{}, {}, SuggestionRequestBody
     }
 
     try {
-        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
         const prompt = `Suggest 5 creative and short names for a new item in the "${categoryName}" category. Respond with ONLY a valid JSON array of strings. Do not include markdown, backticks, or any other text. Example response: ["Name 1", "Name 2", "Name 3", "Name 4", "Name 5"]`;
 
         const result = await model.generateContent(prompt);
