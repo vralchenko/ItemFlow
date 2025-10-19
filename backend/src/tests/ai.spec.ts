@@ -2,7 +2,7 @@ import { test, expect, APIResponse } from '@playwright/test';
 
 test.describe('AI API Endpoint', () => {
 
-    test.skip('should return a list of suggestions for a valid category', async ({ request }) => {
+    test('should return a list of suggestions for a valid category', async ({ request }) => {
         const response: APIResponse = await request.post('/api/ai/suggest-name', {
             data: {
                 categoryName: 'Electronics'
