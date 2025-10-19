@@ -50,14 +50,12 @@ export function useItems() {
     };
 
     const deleteItem = async (id: string) => {
-        if (window.confirm("Are you sure you want to delete this item?")) {
-            try {
-                await axios.delete(`${API_BASE_URL}/api/items/${id}`);
-                toast.success("Item deleted successfully!");
-                await fetchItems();
-            } catch (error) {
-                toast.error("Failed to delete item.");
-            }
+        try {
+            await axios.delete(`${API_BASE_URL}/api/items/${id}`);
+            toast.success("Item deleted successfully!");
+            await fetchItems();
+        } catch (error) {
+            toast.error("Failed to delete item.");
         }
     };
 

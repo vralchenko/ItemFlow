@@ -9,7 +9,11 @@
     "editItemTitle": "Редактировать элемент",
     "manageCategoriesTitle": "Управление категориями",
     "newCategoryName": "Имя новой категории",
-    "existingCategories": "Существующие категории"
+    "existingCategories": "Существующие категории",
+    "confirmItemDeleteTitle": "Подтвердите удаление",
+    "confirmItemDeleteMessage": "Вы уверены, что хотите удалить этот элемент? Это действие нельзя будет отменить.",
+    "confirmCategoryDeleteTitle": "Подтвердите удаление",
+    "confirmCategoryDeleteMessage": "Удаление категории отвяжет ее от всех связанных элементов. Продолжить?"
   },
   "form": {
     "itemName": "Название элемента",
@@ -20,6 +24,7 @@
     "add": "Добавить",
     "save": "Сохранить",
     "close": "Закрыть",
-    "cancel": "Отмена"
+    "cancel": "Отмена",
+    "delete": "Удалить"
   }
 }

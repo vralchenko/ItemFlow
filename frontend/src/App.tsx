@@ -5,6 +5,7 @@ import { useCategories } from './hooks/useCategories';
 import ItemList from './components/ItemList';
 import ItemFormDialog from './components/ItemFormDialog';
 import CategoryManagerDialog from './components/CategoryManagerDialog';
+import ConfirmationDialog from './components/ConfirmationDialog';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
@@ -40,6 +41,47 @@ function App() {
     const [isItemDialogOpen, setItemDialogOpen] = useState(false);
     const [isCategoryDialogOpen, setCategoryDialogOpen] = useState(false);
     const [editingItem, setEditingItem] = useState<Item | null>(null);
+
+    const [isItemConfirmDialogOpen, setItemConfirmDialogOpen] = useState(false);
+    const [itemToDeleteId, setItemToDeleteId] = useState<string | null>(null);
+
+    const [isCategoryConfirmDialogOpen, setCategoryConfirmDialogOpen] = useState(false);
+    const [categoryToDeleteId, setCategoryToDeleteId] = useState<string | null>(null);
+
+    const handleOpenItemConfirmDialog = (id: string) => {
+        setItemToDeleteId(id);
+        setItemConfirmDialogOpen(true);
+    };
+
+    const handleCloseItemConfirmDialog = () => {
+        setItemToDeleteId(null);
+        setItemConfirmDialogOpen(false);
+    };
+
+    const handleConfirmItemDelete = async () => {
+        if (itemToDeleteId) {
+            await deleteItem(itemToDeleteId);
+        }
+        handleCloseItemConfirmDialog();
+    };
+
+    const handleOpenCategoryConfirmDialog = (id: string) => {
+        setCategoryToDeleteId(id);
+        setCategoryConfirmDialogOpen(true);
+    };
+
+    const handleCloseCategoryConfirmDialog = () => {
+        setCategoryToDeleteId(null);
+        setCategoryConfirmDialogOpen(false);
+    };
+
+    const handleConfirmCategoryDelete = async () => {
+        if (categoryToDeleteId) {
+            await deleteCategory(categoryToDeleteId);
+            await fetchItems();
+        }
+        handleCloseCategoryConfirmDialog();
+    };
 
     const handleOpenEditDialog = useCallback((item: Item) => {
         setEditingItem(item);
@@ -125,7 +167,7 @@ function App() {
                 <ItemList
                     items={items}
                     onEdit={handleOpenEditDialog}
-                    onDelete={deleteItem}
+                    onDelete={handleOpenItemConfirmDialog}
                 />
 
                 {totalPages > 1 && (
@@ -154,7 +196,23 @@ function App() {
                 categories={categories}
                 onAddCategory={addCategory}
                 onUpdateCategory={updateCategory}
-                onDeleteCategory={deleteCategory}
+                onDeleteCategory={handleOpenCategoryConfirmDialog}
+            />
+
+            <ConfirmationDialog
+                open={isItemConfirmDialogOpen}
+                onClose={handleCloseItemConfirmDialog}
+                onConfirm={handleConfirmItemDelete}
+                title={t('dialogs.confirmItemDeleteTitle')}
+                message={t('dialogs.confirmItemDeleteMessage')}
+            />
+
+            <ConfirmationDialog
+                open={isCategoryConfirmDialogOpen}
+                onClose={handleCloseCategoryConfirmDialog}
+                onConfirm={handleConfirmCategoryDelete}
+                title={t('dialogs.confirmCategoryDeleteTitle')}
+                message={t('dialogs.confirmCategoryDeleteMessage')}
             />
 
             <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />

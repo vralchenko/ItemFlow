@@ -50,14 +50,12 @@ export function useCategories() {
     };
 
     const deleteCategory = async (id: string) => {
-        if (window.confirm("Deleting a category will un-categorize associated items. Continue?")) {
-            try {
-                await axios.delete(`${API_BASE_URL}/api/categories/${id}`);
-                toast.success("Category deleted!");
-                await fetchCategories();
-            } catch (error) {
-                toast.error("Failed to delete category.");
-            }
+        try {
+            await axios.delete(`${API_BASE_URL}/api/categories/${id}`);
+            toast.success("Category deleted!");
+            await fetchCategories();
+        } catch (error) {
+            toast.error("Failed to delete category.");
         }
     };
 
