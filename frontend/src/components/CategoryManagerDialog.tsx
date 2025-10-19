@@ -1,3 +1,5 @@
+// frontend/src/components/CategoryManagerDialog.tsx
+
 import React, { useState, ChangeEvent, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -16,7 +18,7 @@ interface CategoryManagerDialogProps {
     categories: Category[];
     onAddCategory: (name: string) => Promise<void>;
     onUpdateCategory: (id: string, name: string) => Promise<void>;
-    onDeleteCategory: (id: string) => Promise<void>;
+    onDeleteCategory: (id: string) => void; // ИЗМЕНЕНИЕ ЗДЕСЬ
 }
 
 const CategoryManagerDialog: React.FC<CategoryManagerDialogProps> = ({

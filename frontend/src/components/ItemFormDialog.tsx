@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import {
     Button, Dialog, DialogActions, DialogContent, DialogTitle,
     Box, Stack, TextField, Select, MenuItem, InputLabel, FormControl,
-    IconButton, InputAdornment, CircularProgress, SelectChangeEvent
+    IconButton, InputAdornment, CircularProgress, SelectChangeEvent, Chip
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -45,6 +45,7 @@ const ItemFormDialog: React.FC<ItemFormDialogProps> = ({
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [preview, setPreview] = useState<string | null>(null);
     const [isSuggesting, setIsSuggesting] = useState<boolean>(false);
+    const [suggestions, setSuggestions] = useState<string[]>([]);
 
     useEffect(() => {
         if (editingItem) {
@@ -57,6 +58,7 @@ const ItemFormDialog: React.FC<ItemFormDialogProps> = ({
         }
         setErrors({});
         setSelectedFile(null);
+        setSuggestions([]);
     }, [editingItem, categories, open]);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent) => {
@@ -119,19 +121,24 @@ const ItemFormDialog: React.FC<ItemFormDialogProps> = ({
         }
 
         setIsSuggesting(true);
+        setSuggestions([]);
         try {
             const response = await axios.post<string[]>(`${API_BASE_URL}/api/ai/suggest-name`, {
                 categoryName: category.name
             });
-            const suggestions = response.data;
-            if (suggestions && suggestions.length > 0) {
-                setFormData(prev => ({ ...prev, name: suggestions[0] }));
+            if (response.data && response.data.length > 0) {
+                setSuggestions(response.data);
             }
         } catch (error) {
             toast.error("Could not get a suggestion.");
         } finally {
             setIsSuggesting(false);
         }
+    };
+
+    const handleSuggestionClick = (suggestion: string) => {
+        setFormData(prev => ({ ...prev, name: suggestion }));
+        setSuggestions([]);
     };
 
     return (
@@ -150,22 +157,32 @@ const ItemFormDialog: React.FC<ItemFormDialogProps> = ({
                             error={!!errors.name}
                             helperText={errors.name}
                             autoFocus
-                            slotProps={{
-                                input: {
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label="suggest name"
-                                                onClick={handleSuggestName}
-                                                disabled={isSuggesting || !formData.category_id}
-                                            >
-                                                {isSuggesting ? <CircularProgress size={24} /> : <AutoAwesomeIcon />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    )
-                                }
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="suggest name"
+                                            onClick={handleSuggestName}
+                                            disabled={isSuggesting || !formData.category_id}
+                                        >
+                                            {isSuggesting ? <CircularProgress size={24} /> : <AutoAwesomeIcon />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                )
                             }}
                         />
+                        {suggestions.length > 0 && (
+                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
+                                {suggestions.map((name, index) => (
+                                    <Chip
+                                        key={index}
+                                        label={name}
+                                        onClick={() => handleSuggestionClick(name)}
+                                        variant="outlined"
+                                    />
+                                ))}
+                            </Box>
+                        )}
                         <FormControl fullWidth required error={!!errors.category_id}>
                             <InputLabel id="category-select-label">{t('form.category')}</InputLabel>
                             <Select

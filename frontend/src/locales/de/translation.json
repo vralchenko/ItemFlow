@@ -9,7 +9,11 @@
     "editItemTitle": "Artikel bearbeiten",
     "manageCategoriesTitle": "Kategorien verwalten",
     "newCategoryName": "Neuer Kategoriename",
-    "existingCategories": "Bestehende Kategorien"
+    "existingCategories": "Bestehende Kategorien",
+    "confirmItemDeleteTitle": "Löschen bestätigen",
+    "confirmItemDeleteMessage": "Sind Sie sicher, dass Sie diesen Artikel löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "confirmCategoryDeleteTitle": "Löschen bestätigen",
+    "confirmCategoryDeleteMessage": "Das Löschen einer Kategorie führt dazu, dass zugehörige Artikel nicht mehr kategorisiert sind. Fortfahren?"
   },
   "form": {
     "itemName": "Artikelname",
@@ -20,6 +24,7 @@
     "add": "Hinzufügen",
     "save": "Speichern",
     "close": "Schließen",
-    "cancel": "Abbrechen"
+    "cancel": "Abbrechen",
+    "delete": "Löschen"
   }
 }

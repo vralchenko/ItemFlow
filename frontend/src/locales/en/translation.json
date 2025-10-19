@@ -9,7 +9,11 @@
     "editItemTitle": "Edit Item",
     "manageCategoriesTitle": "Manage Categories",
     "newCategoryName": "New Category Name",
-    "existingCategories": "Existing Categories"
+    "existingCategories": "Existing Categories",
+    "confirmItemDeleteTitle": "Confirm Deletion",
+    "confirmItemDeleteMessage": "Are you sure you want to delete this item? This action cannot be undone.",
+    "confirmCategoryDeleteTitle": "Confirm Deletion",
+    "confirmCategoryDeleteMessage": "Deleting a category will un-categorize associated items. Continue?"
   },
   "form": {
     "itemName": "Item Name",
@@ -20,6 +24,7 @@
     "add": "Add",
     "save": "Save",
     "close": "Close",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "delete": "Delete"
   }
 }

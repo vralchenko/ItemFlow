@@ -9,7 +9,11 @@
     "editItemTitle": "Редагувати елемент",
     "manageCategoriesTitle": "Керування категоріями",
     "newCategoryName": "Назва нової категорії",
-    "existingCategories": "Існуючі категорії"
+    "existingCategories": "Існуючі категорії",
+    "confirmItemDeleteTitle": "Підтвердіть видалення",
+    "confirmItemDeleteMessage": "Ви впевнені, що хочете видалити цей елемент? Цю дію неможливо буде скасувати.",
+    "confirmCategoryDeleteTitle": "Підтвердіть видалення",
+    "confirmCategoryDeleteMessage": "Видалення категорії відв'яже її від усіх пов'язаних елементів. Продовжити?"
   },
   "form": {
     "itemName": "Назва елемента",
@@ -20,6 +24,7 @@
     "add": "Додати",
     "save": "Зберегти",
     "close": "Закрити",
-    "cancel": "Скасувати"
+    "cancel": "Скасувати",
+    "delete": "Видалити"
   }
 }
