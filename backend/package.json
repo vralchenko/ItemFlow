@@ -9,7 +9,7 @@
     "start": "cross-env NODE_ENV=production node dist/server.js",
     "dev": "cross-env NODE_ENV=development nodemon --watch 'src/**/*.ts' --exec 'tsx' src/server.ts",
     "start:test": "cross-env NODE_ENV=test tsx src/server.ts",
-    "db:init": "cross-env NODE_ENV=development tsx src/init-db.ts",
+    "db:init": "tsx src/init-db.ts",
     "test:init-db": "rm -f ./test-database.sqlite && cross-env NODE_ENV=test tsx src/init-db.ts",
     "test:api": "playwright test",
     "test:ci": "npm run start:test & wait-on http://127.0.0.1:3001/health && npm run test:api"
