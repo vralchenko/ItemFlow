@@ -1,10 +1,7 @@
 import { open, Database } from 'sqlite';
 import sqlite3 from 'sqlite3';
-import dotenv from 'dotenv';
 
-dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
-
-const initializeDatabase = async (): Promise<Database> => {
+const getDbConnection = async (): Promise<Database> => {
     const databasePath = process.env.DATABASE_PATH;
 
     if (!databasePath) {
@@ -24,6 +21,6 @@ const initializeDatabase = async (): Promise<Database> => {
     }
 };
 
-const dbPromise = initializeDatabase();
+const dbPromise = getDbConnection();
 
 export default dbPromise;
