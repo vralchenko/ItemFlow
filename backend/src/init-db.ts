@@ -1,9 +1,6 @@
 import { open } from 'sqlite';
 import sqlite3 from 'sqlite3';
 import crypto from 'crypto';
-import dotenv from 'dotenv';
-
-dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
 async function setup() {
     const dbPath = process.env.DATABASE_PATH;
@@ -22,19 +19,19 @@ async function setup() {
 
         await db.exec(`
             CREATE TABLE IF NOT EXISTS categories (
-                id TEXT PRIMARY KEY,
-                name TEXT NOT NULL UNIQUE
+                                                      id TEXT PRIMARY KEY,
+                                                      name TEXT NOT NULL UNIQUE
             )
         `);
 
         await db.exec(`
             CREATE TABLE IF NOT EXISTS items (
-                id TEXT PRIMARY KEY,
-                name TEXT NOT NULL,
-                category_id TEXT,
-                image TEXT,
-                FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE SET NULL
-            )
+                                                 id TEXT PRIMARY KEY,
+                                                 name TEXT NOT NULL,
+                                                 category_id TEXT,
+                                                 image TEXT,
+                                                 FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE SET NULL
+                )
         `);
 
         await db.exec('BEGIN TRANSACTION;');
