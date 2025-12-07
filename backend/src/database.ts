@@ -14,6 +14,12 @@ const getDbConnection = async (): Promise<Database> => {
         driver: sqlite3.Database
     });
 
+    // Очистка таблиц перед созданием для предотвращения конфликтов FOREIGN KEY
+    await db.exec('PRAGMA foreign_keys=OFF;');
+    await db.exec('DROP TABLE IF EXISTS items');
+    await db.exec('DROP TABLE IF EXISTS categories');
+    await db.exec('PRAGMA foreign_keys=ON;');
+
     await db.exec('PRAGMA foreign_keys=ON;');
 
     await db.exec(`
