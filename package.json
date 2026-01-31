@@ -1,4 +1,9 @@
 {
+  "scripts": {
+    "start": "npm run start --prefix backend",
+    "build": "npm run build --prefix backend",
+    "db:init": "npm run db:init --prefix backend"
+  },
   "dependencies": {
     "react-toastify": "^11.0.5"
   }
