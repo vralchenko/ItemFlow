@@ -3,11 +3,7 @@ import sqlite3 from 'sqlite3';
 import crypto from 'crypto';
 
 const getDbConnection = async (): Promise<Database> => {
-    const databasePath = process.env.DATABASE_PATH;
-
-    if (!databasePath) {
-        throw new Error("DATABASE_PATH environment variable is not set.");
-    }
+    const databasePath = process.env.DATABASE_PATH || './database.sqlite';
 
     const db = await open({
         filename: databasePath,
