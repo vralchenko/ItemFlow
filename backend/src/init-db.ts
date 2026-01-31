@@ -1,16 +1,10 @@
 import { open } from 'sqlite';
 import sqlite3 from 'sqlite3';
 import crypto from 'crypto';
-import dotenv from 'dotenv';
-
-dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
+import './loadEnv.js';
 
 async function setup() {
-    const dbPath = process.env.DATABASE_PATH;
-    if (!dbPath) {
-        console.error("Error: DATABASE_PATH environment variable is not set.");
-        process.exit(1);
-    }
+    const dbPath = process.env.DATABASE_PATH || './database.sqlite';
 
     try {
         const db = await open({
