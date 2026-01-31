@@ -1,14 +1,12 @@
+import './loadEnv.js';
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import path from 'path';
-import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import itemRoutes from './routes/items.js';
 import categoryRoutes from './routes/categories.js';
 import testRoutes from './routes/test.js';
 import aiRoutes from './routes/ai.js';
-
-dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
 const app = express();
 
