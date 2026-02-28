@@ -1,3 +1,13 @@
+---
+title: ItemFlow
+emoji: 📦
+colorFrom: green
+colorTo: blue
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # Item Flow
 
 **Item Flow** is a full-stack web application for managing an item inventory, demonstrating a modern, type-safe, and professional approach to web development. The entire project, from frontend to backend and tests, is written in TypeScript.
@@ -97,10 +107,22 @@ The project is organized as a monorepo with two primary directories:
 
 3.  **Create the environment file**
 
-    In the `frontend` folder, create a file named `.env` and add the following content:
+    In the `frontend` folder, create a file named `.env.local` for local development:
     ```env
     VITE_API_URL=http://localhost:3001
     ```
+
+    For production deployment on Vercel, the `.env.production` file is already configured to use the Railway backend:
+    ```env
+    VITE_API_URL=https://itemflow-production-e5ce.up.railway.app
+    ```
+
+    **Important for Vercel Deployment:**
+    - Go to your Vercel project settings
+    - Navigate to **Settings** → **Environment Variables**
+    - Add `VITE_API_URL` with value `https://itemflow-production-e5ce.up.railway.app`
+    - Select all environments (Production, Preview, Development)
+    - Redeploy your project for changes to take effect
 
 ---
 ## 🚀 Running the Application in Development Mode

@@ -30,6 +30,14 @@ if (process.env.NODE_ENV === 'test') {
     app.use('/api/test', testRoutes);
 }
 
+if (process.env.NODE_ENV === 'production') {
+    const publicPath = path.join(__dirname, '..', 'public');
+    app.use(express.static(publicPath));
+    app.get('*', (_req, res) => {
+        res.sendFile(path.join(publicPath, 'index.html'));
+    });
+}
+
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     console.error(">>> UNHANDLED ERROR!:", err);
     res.status(500).json({ error: "An internal server error occurred." });

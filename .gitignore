@@ -6,6 +6,7 @@
 # Environment variables
 .env
 .env.*
+!.env.production
 /frontend/.env
 /backend/.env.*
 
