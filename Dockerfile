@@ -23,8 +23,13 @@ RUN cd frontend && VITE_API_URL="" npx vite build
 # Copy frontend build to backend/public for Express to serve
 RUN cp -r frontend/dist backend/public
 
+# Give node user ownership so SQLite can write the database file
+RUN chown -R node:node /app/backend
+
 ENV NODE_ENV=production
 ENV PORT=7860
+
+WORKDIR /app/backend
 
 USER node
 
