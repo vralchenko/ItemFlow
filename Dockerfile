@@ -29,8 +29,6 @@ RUN chown -R node:node /app/backend
 ENV NODE_ENV=production
 ENV PORT=7860
 
-WORKDIR /app/backend
-
 USER node
 
 CMD ["node", "backend/dist/server.js"]
