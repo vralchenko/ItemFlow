@@ -28,6 +28,7 @@ RUN chown -R node:node /app/backend
 
 ENV NODE_ENV=production
 ENV PORT=7860
+ENV DATABASE_PATH=/app/backend/database.sqlite
 
 USER node
 
