@@ -17,7 +17,7 @@ pinned: false
 
 * **Live App (Hugging Face Spaces):** [vralchenko-itemflow.hf.space](https://vralchenko-itemflow.hf.space/)
 
-_Note: The backend is hosted on a free Render instance and may take up to 50 seconds to "wake up" on the first request._
+_Note: The app is hosted on a free Hugging Face Spaces instance and may take up to 50 seconds to "wake up" on the first request._
 
 ---
 ## 🚀 Key Features
@@ -43,7 +43,7 @@ _Note: The backend is hosted on a free Render instance and may take up to 50 sec
 | **Backend** | Node.js, Express, TypeScript, SQLite, Cloudinary (for image storage), Multer, Google Generative AI |
 | **Testing** | Playwright (for both API and E2E tests)                                                            |
 | **Tooling** | tsx (for running TypeScript on-the-fly), nodemon, cross-env, `wait-on`                             |
-| **Deployment**| Vercel (Frontend), Render (Backend), GitHub Actions (CI/CD)                                        |
+| **Deployment**| [Hugging Face Spaces](https://vralchenko-itemflow.hf.space/) (Docker), GitHub Actions (CI/CD)      |
 
 ---
 ## 📁 Project Structure
@@ -111,17 +111,7 @@ The project is organized as a monorepo with two primary directories:
     VITE_API_URL=http://localhost:3001
     ```
 
-    For production deployment on Vercel, the `.env.production` file is already configured to use the Railway backend:
-    ```env
-    VITE_API_URL=https://itemflow-production-e5ce.up.railway.app
-    ```
-
-    **Important for Vercel Deployment:**
-    - Go to your Vercel project settings
-    - Navigate to **Settings** → **Environment Variables**
-    - Add `VITE_API_URL` with value `https://itemflow-production-e5ce.up.railway.app`
-    - Select all environments (Production, Preview, Development)
-    - Redeploy your project for changes to take effect
+    For production deployment on Hugging Face Spaces, `VITE_API_URL=""` is set in the Dockerfile so API calls use relative paths (same origin).
 
 ---
 ## 🚀 Running the Application in Development Mode
