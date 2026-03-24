@@ -6,8 +6,8 @@ WORKDIR /app
 COPY backend/package.json backend/package-lock.json* backend/
 RUN cd backend && npm install
 
-# Install frontend dependencies
-COPY frontend/package.json frontend/package-lock.json* frontend/
+# Install frontend dependencies (no lock file — ensures correct platform-specific rollup binary)
+COPY frontend/package.json frontend/
 RUN cd frontend && npm install
 
 # Copy source code
